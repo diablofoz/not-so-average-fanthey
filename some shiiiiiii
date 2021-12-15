@@ -1,0 +1,95 @@
+var radius;
+var circ;
+var points;
+var length2;
+var sides;
+var repeat;
+
+function draw_a_circle(radius) {
+  circ = 2 * (3.14 * radius);
+  for (var count = 0; count < 180; count++) {
+      moveForward(circ / 180);
+    turnLeft(2);
+  }
+}
+
+function math_random_int(a, b) {
+  if (a > b) {
+    // Swap a and b to ensure a is smaller.
+    var c = a;
+    a = b;
+    b = c;
+  }
+  return Math.floor(Math.random() * (b - a + 1) + a);
+}
+
+function draw_a_star(points, length2) {
+  for (var count3 = 0; count3 < points; count3++) {
+      moveForward(length2);
+    turnLeft(360 / points);
+    moveForward(length2);
+    turnRight(720 / points);
+  }
+}
+
+function draw_a_pinwheel(sides, length2, repeat) {
+  for (var count5 = 0; count5 < repeat; count5++) {
+      for (var count4 = 0; count4 < sides; count4++) {
+          moveForward(length2);
+      turnRight(360 / sides);
+    }
+    turnRight(60);
+  }
+}
+
+function draw_a_triangle(length2) {
+  for (var count6 = 0; count6 < 3; count6++) {
+      moveForward(length2);
+    turnLeft(120);
+  }
+}
+
+function draw_a_shape(sides, length2) {
+  for (var count7 = 0; count7 < sides; count7++) {
+      moveForward(length2);
+    turnLeft(360 / sides);
+  }
+}
+
+function draw_a_house(length2) {
+  for (var count8 = 0; count8 < 3; count8++) {
+      moveForward(length2);
+    turnLeft(120);
+  }
+  for (var count9 = 0; count9 < 4; count9++) {
+      moveForward(length2);
+    turnRight(90);
+  }
+}
+
+function draw_a_square(length2) {
+  for (var count10 = 0; count10 < 4; count10++) {
+      moveForward(length2);
+    turnRight(90);
+  }
+}
+
+var repeat_end = math_random_int(30, 60);
+for (var count2 = 0; count2 < repeat_end; count2++) {
+  var points_start = math_random_int(1, 100);
+  var points_end = math_random_int(1, 100);
+  var points_inc = Math.abs(math_random_int(1, 100));
+  if (points_start > points_end) {
+    points_inc = -points_inc;
+  }
+  for (points = points_start;
+       points_inc >= 0 ? points <= points_end : points >= points_end;
+       points += points_inc) {
+      draw_a_circle(math_random_int(1, 100));
+    moveForward(math_random_int(24, 70));
+    moveBackward(math_random_int(24, 70));
+    turnLeft(math_random_int(24, 70));
+    turnRight(math_random_int(24, 70));
+    draw_a_shape(math_random_int(50, 100), math_random_int(50, 100));
+  }
+}
