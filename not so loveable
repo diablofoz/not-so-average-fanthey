@@ -1,0 +1,3859 @@
+World.frameRate = 60;
+//a lot of variables!
+var menu = 0;
+var songlist = 0;
+var soundcounter = 0;
+var coinsblue = 500;
+var coinsred = 500;
+var bluerate = 5000;
+var redrate = 5000;
+var expansion = 0;
+
+//each unit has a timer for attacking and a health value, currently 0
+var slasherattack = 1000;
+var slasherhealth = 100;
+
+var bknightattack = 100;
+var bknighthealth = 1000;
+
+var bcavalryattack = 1;
+var bcavalryhealth = 0;
+var bcavalryrush = 0;
+var bcavalrydamage = 2;
+
+var berserkerattack = 10;
+var berserkerhealth = 0;
+
+var ramhealth = 0;
+var ramattack = 1;
+
+var pikemanattack = 1;
+var pikemanhealth = 0;
+
+var archerhealth = 100;
+var archerattack = 1;
+
+var pavisierhealth = 0;
+var pavisierattack = 1;
+var paviseon = 0;
+var paviseplace = 1;
+var pavisehealth = 0;
+
+var phalanxattack = 1;
+var phalanxhealth = 0;
+var phalanxdefense = 0;
+var phalanx2attack = 1;
+var phalanx2health = 0;
+var phalanx2defense = 0;
+var phalanx3attack = 1;
+var phalanx3health = 0;
+var phalanx3defense = 0;
+
+var footmanattack = 1;
+var footmanhealth = 0;
+var footman2attack = 1;
+var footman2health = 0;
+var footman3attack = 1;
+var footman3health = 0;
+
+var cannonattack = 1;
+var cannonhealth = 0;
+
+var rslasherattack = 1;
+var rslasherhealth = 0;
+
+var knighthealth = 0;
+var knightattack = 1;
+
+var cavalryattack = 1;
+var cavalryhealth = 0;
+var cavalryrush = 0;
+var cavalrydamage = 2;
+
+var rberserkerattack = 1;
+var rberserkerhealth = 0;
+
+var rarcherhealth = 0;
+var rarcherattack = 1;
+
+var rpavisierhealth = 0;
+var rpavisierattack = 1;
+var rpaviseon = 0;
+var rpaviseplace = 1;
+var rpavisehealth = 0;
+
+var rphalanxattack = 1;
+var rphalanxhealth = 0;
+var rphalanxdefense = 0;
+var rphalanx2attack = 1;
+var rphalanx2health = 0;
+var rphalanx2defense = 0;
+var rphalanx3attack = 1;
+var rphalanx3health = 0;
+var rphalanx3defense = 0;
+
+var rcannonattack = 1;
+var rcannonhealth = 0;
+
+var rpikemanattack = 1;
+var rpikemanhealth = 0;
+
+var rramhealth = 0;
+var rramattack = 1;
+
+var rfootmanattack = 1;
+var rfootmanhealth = 0;
+var rfootman2attack = 1;
+var rfootman2health = 0;
+var rfootman3attack = 1;
+var rfootman3health = 0;
+
+var towerbluehealth = 50;
+var towerredhealth = 50;
+
+var bluelane = 1;
+var redlane = 1;
+
+var back = createGroup();
+var backdrop = createSprite(200,200);
+backdrop.setAnimation("Map");
+backdrop.scale = 1;
+back.add(backdrop);
+
+//"blue" units
+var blue = createGroup();
+
+//tower
+var tower_blue = createSprite(25,175);
+tower_blue.setAnimation("Tower_Blue");
+blue.add(tower_blue);
+tower_blue.scale = 0.4;
+
+//the deck
+var deck = createSprite(90,345);
+deck.setAnimation("bluedeck");
+deck.scale = 0.4;
+deck.visible = true;
+
+var deck2 = createSprite(310,345);
+deck2.setAnimation("reddeck");
+deck2.scale = 0.4;
+deck2.visible = true;
+
+//a unit
+var slasher = createSprite(0,230);
+slasher.setAnimation("SlasherIdle");
+blue.add(slasher);
+slasher.debug = false;
+slasher.setCollider("circle");
+slasher.scale = 0.375;
+
+var bknight = createSprite(0,230);
+bknight.setAnimation("BknightIdle");
+blue.add(bknight);
+bknight.debug = false;
+bknight.setCollider("circle");
+bknight.scale = 0.375;
+
+var bcavalry = createSprite(0,230);
+bcavalry.setAnimation("bCavalryIdle");
+blue.add(bcavalry);
+bcavalry.debug = false;
+bcavalry.setCollider("circle");
+bcavalry.scale = 0.2;
+
+var berserker = createSprite(0,230);
+berserker.setAnimation("BerserkerIdle");
+blue.add(berserker);
+berserker.debug = false;
+berserker.setCollider("circle");
+berserker.scale = 0.375;
+
+var pikeman = createSprite(0,230);
+pikeman.setAnimation("Pikeman");
+blue.add(pikeman);
+pikeman.debug = false;
+pikeman.setCollider("circle");
+pikeman.scale = 0.45;
+
+var ram = createSprite(0,230);
+ram.setAnimation("BatteringRamIdle");
+blue.add(ram);
+ram.debug = false;
+ram.setCollider("circle");
+ram.scale = 0.45;
+
+var pike = createSprite(0,230);
+pike.setAnimation("PikeIdle");
+pike.debug = false;
+pike.setCollider("circle");
+pike.scale = 0.45;
+
+var archer = createSprite(0,230);
+archer.setAnimation("ArcherIdle");
+blue.add(archer);
+archer.debug = false;
+archer.setCollider("circle");
+archer.scale = 0.375;
+
+//a range
+var archerrange = createSprite(archer.x + 25,230);
+archerrange.scale = 0.5;
+archerrange.setAnimation("ArcherRange");
+archerrange.visible = false;
+archerrange.setCollider("rectangle");
+archerrange.debug = true;
+
+// a projectile
+var arrow = createSprite(archer.x,230);
+arrow.setAnimation("Arrow");
+arrow.visible = false;
+arrow.scale = 0.75;
+arrow.setCollider("rectangle");
+arrow.debug = false;
+
+var pavisier = createSprite(0,235);
+pavisier.setAnimation("PavisierIdle");
+pavisier.visible = false;
+blue.add(pavisier);
+pavisier.debug = false;
+pavisier.setCollider("circle");
+pavisier.scale = 0.475;
+
+var pavisierrange = createSprite(pavisier.x + 25,235);
+pavisierrange.scale = 0.7;
+pavisierrange.setAnimation("PavisierRange");
+pavisierrange.visible = false;
+pavisierrange.setCollider("rectangle");
+pavisierrange.debug = false;
+
+var pavisierarrow = createSprite(pavisier.x,235);
+pavisierarrow.setAnimation("PavisierArrow");
+pavisierarrow.visible = false;
+pavisierarrow.scale = 0.6;
+pavisierarrow.setCollider("rectangle");
+pavisierarrow.debug = false;
+
+var pavise = createSprite(pavisier.x+8, 242);
+pavise.setAnimation("Pavise");
+pavise.visible = false;
+pavise.scale = 0.5;
+pavise.setCollider("circle");
+pavise.debug = false;
+
+var footman = createSprite(0,220);
+footman.setAnimation("FootmanRedIdle");
+blue.add(footman);
+footman.debug = false;
+footman.setCollider("circle");
+footman.scale = 0.375;
+var footmanlook = 1;
+var footman2 = createSprite(0,230);
+footman2.setAnimation("FootmanBlueIdle");
+blue.add(footman2);
+footman2.debug = false;
+footman2.setCollider("circle");
+footman2.scale = 0.375;
+var footman2look = 1;
+var footman3 = createSprite(0,240);
+footman3.setAnimation("FootmanGreenIdle");
+blue.add(footman3);
+footman3.debug = false;
+footman3.setCollider("circle");
+footman3.scale = 0.375;
+var footman3look = 1;
+
+
+var bluephalange = createGroup();
+var phalanx = createSprite(0,220);
+phalanx.setAnimation("Phalanx");
+blue.add(phalanx);
+bluephalange.add(phalanx);
+phalanx.debug = false;
+phalanx.setCollider("circle");
+phalanx.scale = 0.375;
+var phalanx2 = createSprite(0,230);
+phalanx2.setAnimation("Phalanx");
+blue.add(phalanx2);
+bluephalange.add(phalanx2);
+phalanx2.debug = false;
+phalanx2.setCollider("circle");
+phalanx2.scale = 0.375;
+var phalanx3 = createSprite(0,240);
+phalanx3.setAnimation("Phalanx");
+blue.add(phalanx3);
+bluephalange.add(phalanx3);
+phalanx3.debug = false;
+phalanx3.setCollider("circle");
+phalanx3.scale = 0.375;
+
+var cannon = createSprite(0,230);
+cannon.setAnimation("Cannoneer");
+blue.add(cannon);
+cannon.debug = false;
+cannon.setCollider("circle");
+cannon.scale = 0.5;
+
+//a range
+var cannonrange = createSprite(cannon.x + 25,230);
+cannonrange.scale = 0.5;
+cannonrange.setAnimation("CannonRange");
+cannonrange.visible = false;
+cannonrange.setCollider("rectangle");
+cannonrange.debug = false;
+
+// a projectile
+var cannonball = createSprite(cannon.x,230);
+cannonball.setAnimation("Cannonball");
+cannonball.visible = false;
+cannonball.scale = 0.3;
+cannonball.setCollider("circle");
+cannonball.debug = false;
+
+//el rojo units
+
+var red = createGroup();
+
+var tower_red = createSprite(375,175);
+tower_red.setAnimation("Tower_Red");
+red.add(tower_red);
+tower_red.scale = 0.4;
+
+var rslasher = createSprite(400,230);
+rslasher.setAnimation("rSlasherIdle");
+red.add(rslasher);
+rslasher.debug = false;
+rslasher.setCollider("circle");
+rslasher.scale = 0.375;
+
+var knight = createSprite(400,230);
+knight.setAnimation("KnightIdle");
+red.add(knight);
+knight.debug = false;
+knight.setCollider("circle");
+knight.scale = 0.375;
+
+var cavalry = createSprite(400,230);
+cavalry.setAnimation("SlasherIdle");
+red.add(cavalry);
+cavalry.debug = false;
+cavalry.setCollider("circle");
+cavalry.scale = 0.2;
+
+var rberserker = createSprite(400,240);
+rberserker.setAnimation("rBerserkerIdle");
+red.add(rberserker);
+rberserker.debug = false;
+rberserker.setCollider("circle");
+rberserker.scale = 0.375;
+
+var rpikeman = createSprite(400,230);
+rpikeman.setAnimation("rPikeman");
+red.add(rpikeman);
+rpikeman.debug = false;
+rpikeman.setCollider("circle");
+rpikeman.scale = 0.45;
+
+var rpike = createSprite(400,230);
+rpike.setAnimation("rPikeIdle");
+rpike.debug = false;
+rpike.setCollider("circle");
+rpike.scale = 0.45;
+
+var rram = createSprite(0,230);
+rram.setAnimation("rBatteringRamIdle");
+red.add(rram);
+rram.debug = false;
+rram.setCollider("circle");
+rram.scale = 0.45;
+
+var rarcher = createSprite(400,230);
+rarcher.setAnimation("rArcherIdle");
+red.add(rarcher);
+rarcher.debug = false;
+rarcher.setCollider("circle");
+rarcher.scale = 0.375;
+
+var rarcherrange = createSprite(rarcher.x - 25,230);
+rarcherrange.scale = 0.5;
+rarcherrange.setAnimation("ArcherRange");
+rarcherrange.visible = false;
+archerrange.setCollider("rectangle");
+archerrange.debug = true;
+
+var rarrow = createSprite(rarcher.x,230);
+rarrow.setAnimation("rArrow");
+rarrow.visible = false;
+rarrow.scale = 0.75;
+rarrow.setCollider("rectangle");
+rarrow.debug = false;
+
+var rpavisier = createSprite(400,235);
+rpavisier.setAnimation("rPavisierIdle");
+rpavisier.visible = false;
+red.add(rpavisier);
+rpavisier.debug = false;
+rpavisier.setCollider("circle");
+rpavisier.scale = 0.475;
+
+var rpavisierrange = createSprite(rpavisier.x + 25,235);
+rpavisierrange.scale = 0.7;
+rpavisierrange.setAnimation("PavisierRange");
+rpavisierrange.visible = false;
+rpavisierrange.setCollider("rectangle");
+rpavisierrange.debug = false;
+
+var rpavisierarrow = createSprite(rpavisier.x,235);
+rpavisierarrow.setAnimation("rPavisierArrow");
+rpavisierarrow.visible = false;
+rpavisierarrow.scale = 0.6;
+rpavisierarrow.setCollider("rectangle");
+rpavisierarrow.debug = false;
+
+var rpavise = createSprite(rpavisier.x+8, 242);
+rpavise.setAnimation("Pavise");
+rpavise.visible = false;
+rpavise.scale = 0.5;
+rpavise.setCollider("circle");
+rpavise.debug = false;
+
+var redphalange = createGroup();
+var rphalanx = createSprite(400,220);
+rphalanx.setAnimation("Phalanx");
+red.add(rphalanx);
+redphalange.add(rphalanx);
+rphalanx.debug = false;
+rphalanx.setCollider("circle");
+rphalanx.scale = 0.375;
+var rphalanx2 = createSprite(400,230);
+rphalanx2.setAnimation("Phalanx");
+red.add(rphalanx2);
+redphalange.add(rphalanx2);
+rphalanx2.debug = false;
+rphalanx2.setCollider("circle");
+rphalanx2.scale = 0.375;
+var rphalanx3 = createSprite(400,240);
+rphalanx3.setAnimation("Phalanx");
+red.add(rphalanx3);
+redphalange.add(rphalanx3);
+rphalanx3.debug = false;
+rphalanx3.setCollider("circle");
+rphalanx3.scale = 0.375;
+
+var rfootman = createSprite(400,220);
+rfootman.setAnimation("rFootmanRedIdle");
+red.add(rfootman);
+rfootman.debug = false;
+rfootman.setCollider("circle");
+rfootman.scale = 0.375;
+var rfootmanlook = 0;
+var rfootman2 = createSprite(400,230);
+rfootman2.setAnimation("rFootmanBlueIdle");
+red.add(rfootman2);
+rfootman2.debug = false;
+rfootman2.setCollider("circle");
+rfootman2.scale = 0.375;
+var rfootman2look = 0;
+var rfootman3 = createSprite(400,240);
+rfootman3.setAnimation("rFootmanGreenIdle");
+red.add(rfootman3);
+rfootman3.debug = false;
+rfootman3.setCollider("circle");
+rfootman3.scale = 0.375;
+var rfootman3look = 0;
+
+var rcannon = createSprite(400,230);
+rcannon.setAnimation("rCannon");
+red.add(rcannon);
+rcannon.debug = false;
+rcannon.setCollider("circle");
+rcannon.scale = 0.5;
+
+//a range
+var rcannonrange = createSprite(rcannon.x - 25,230);
+rcannonrange.scale = 0.5;
+rcannonrange.setAnimation("CannonRange");
+rcannonrange.visible = false;
+rcannonrange.setCollider("rectangle");
+rcannonrange.debug = true;
+
+// a projectile
+var rcannonball = createSprite(rcannon.x,230);
+rcannonball.setAnimation("Cannonball");
+rcannonball.visible = false;
+rcannonball.scale = 0.3;
+rcannonball.setCollider("circle");
+rcannonball.debug = false;
+
+
+//victory icon
+var win = createSprite(200,200);
+win.setAnimation("bluewin");
+win.visible = false;
+
+var swords = createGroup();
+
+var haven = createSprite(200,0);
+haven.setAnimation("Haven");
+haven.scale = 0.4;
+swords.add(haven);
+haven.velocityY = 10;
+
+var orient = createSprite(0,0);
+orient.setAnimation("Orient");
+orient.scale = 0.4;
+orient.rotation = -45;
+swords.add(orient);
+orient.visible = false;
+
+var crypt = createSprite(400,0);
+crypt.setAnimation("Crypt");
+swords.add(crypt);
+crypt.rotation = 45;
+crypt.scale = 0.4;
+crypt.visible = false;
+
+var button = createSprite(200,320);
+button.setAnimation("reddeck_copy_1");
+swords.add(button);
+button.visible = false;
+
+function draw() {
+  intro();
+  soundtrack();
+  if (menu == 2) {
+    if (expansion > 0) {
+      background("white");
+      slashers();
+      slasherspawn();
+      pikemanattacks();
+      pikemanspawn();
+      pavisierattacks();
+      pavisierspawn();
+      cannonattacks();
+      cannonspawn();
+      ramattacking();
+      ramspawn();
+      footmanattacks();
+      footman2attacks();
+      footman3attacks();
+      footmanspawn();
+      rslashers();
+      rslasherspawn();
+      rpikemanattacks();
+      rpikemanspawn();
+      rramattacking();
+      rramspawn();
+      rpavisierattacks();
+      rpavisierspawn();
+      rcannonattacks();
+      rcannonspawn();
+      rfootmanattacks();
+      rfootman2attacks();
+      rfootman3attacks();
+      rfootmanspawn();
+    }
+    coincreateblue();
+    coincreatered();
+    bknightattacks();
+    bknightspawn();
+    bcavalryattacks();
+    bcavalryspawn();
+    berserkerattacks();
+    berserkerspawn();
+    archerattacks();
+    archerspawn();
+    phalanges();
+    phalanges2();
+    phalanges3();
+    phalangesspawn();
+    knightattacks();
+    knightspawn();
+    cavalryattacks();
+    cavalryspawn();
+    rberserkerattacks();
+    rberserkerspawn();
+    rarcherattacks();
+    rarcherspawn();
+    rphalanges();
+    rphalanges2();
+    rphalanges3();
+    rphalangesspawn();
+    bluelanechange();
+    redlanechange();
+    end();
+    drawSprites();
+    info();
+  }
+  if ((menu < 2) && (menu > 0)) {
+    midmenu();
+  }
+}
+
+function intro() {
+  if (menu < 1) {
+    background("black");
+    drawSprites(swords);
+    if (haven.y > 180) {
+      haven.velocityY = 0;
+      orient.velocityX = 10;
+      orient.velocityY = 10;
+      orient.visible = true;
+    }
+    if (orient.y > 180) {
+      orient.velocityX = 0;
+      orient.velocityY = 0;
+      crypt.velocityX = -9.5;
+      crypt.velocityY = 10;
+      crypt.visible = true;
+    }
+    if (crypt.y > 180) {
+      crypt.velocityX = 0;
+      crypt.velocityY = 0;
+      button.visible = true;
+      textFont("Comic Sans MS");
+      fill("red");
+      textSize(16);
+      text("Press to Start!", 145,325);
+      textSize(25);
+      text("For Our King: Forged in Iron", 35,40);
+      if (button.scale > 0.4) {
+        button.scale = button.scale - 0.05;
+      }
+      if (mousePressedOver(button)) {
+        menu = 1;
+      }
+    }
+  } else if (menu > 1) {
+    haven.visible = false;
+    orient.visible = false;
+    crypt.visible = false;
+    button.visible = false;
+  }
+}
+
+function midmenu() {
+  drawSprites(back);
+  fill("white");
+  expansion = 1;
+  textFont("Comic Sans MS");
+  textSize(20);
+  text("New updates are coming!", 60,40);
+  text("Press 'space' to play normally.", 35,60);
+  textSize(10);
+  text("Q/U - Knight. 40 coins.", 35, 85);
+  text("W/I - Phalanx. 40 coins.", 35, 95);
+  text("E/O - 🅱erserker. 50 coins.", 35, 105);
+  text("A/H - Archer. 30 coins.", 35, 115);
+  text("R/P - Cavalry. 30 coins.", 35, 125);
+  text("S/J - Pavisier. 40 coins.", 35, 135);
+  text("D/K - Cannon. 50 coins.", 35, 145);
+  text("Z/B - Pikeman. 30 coins.", 35, 155);
+  text("X/N - Slasher. 60 coins.", 35, 165);
+  text("C/M - 🅱attering Ram. 50 coins.", 35, 175);
+  text("D/K - Cannon. 50 coins.", 35, 185);
+  text("F/L - Footmen. 60 coins.", 35, 195);
+
+  if (keyDown("space")) {
+     menu = 2;
+    backdrop.x = 200;
+    backdrop.y = 200;
+    backdrop.scale = 0.37;
+    backdrop.setAnimation("🅱️ackdrop");
+    }
+}
+
+function soundtrack() {
+  soundcounter ++;
+  if (songlist === 0) {
+    playSound("videoplayback (2).webm", false);
+    if (soundcounter > 3800) {
+      songlist = 1;
+      soundcounter = 0;
+    }
+  } 
+  if (songlist == 1) {
+    playSound("videoplayback (2).webm", false);
+    if (soundcounter > 3800) {
+      songlist = 0;
+      soundcounter = 0;
+    }
+  }
+  if (soundcounter > 1) {
+      stopSound();
+  }
+}
+
+function info() {
+  fill("black");
+  textFont("Comic Sans MS");
+  text("Coins: " + coinsblue, 10,15);
+  text("Coins: " + coinsred, 340,15);
+  text("Tower: " + towerbluehealth, 10,30);
+  text("Tower: " + towerredhealth, 340,30);
+  text("Lane: " + bluelane, 10, 290);
+  text("Lane: " + redlane, 340, 290);
+}
+
+function coincreateblue() {
+  bluerate++;
+  if (bluerate%15 === 0) {
+    coinsblue = coinsblue + 1;
+    bluerate = 1;
+  }
+}
+
+function coincreatered() {
+  redrate++;
+  if (redrate%15 === 0) {
+    coinsred = coinsred + 1;
+    redrate = 1;
+  }
+}
+
+function bluelanechange() {
+  if (keyDown("1")) {
+    bluelane = 1;
+  }
+  if (keyDown("2")) {
+    bluelane = 2;
+  }
+  if (keyDown("3")) {
+    bluelane = 3;
+  }
+}
+
+function redlanechange() {
+  if (keyDown("8")) {
+    redlane = 1;
+  }
+  if (keyDown("9")) {
+    redlane = 2;
+  }
+  if (keyDown("0")) {
+    redlane = 3;
+  }
+}
+
+function slashers() {
+  slasher.scale = 0.45;
+  if (slasher.isTouching(red)) {
+    slasherattack ++;
+    slasher.velocityX = 0;
+    if (slasherattack < 40) {
+      slasher.setAnimation("SlasherIdle");
+    }
+    if ((slasherattack > 40) && (slasherattack < 48)) {
+      slasher.setAnimation("SlasherAttack");
+    }
+    if (slasherattack > 48) {
+      slasherattack = 1;
+      if (slasher.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 3;
+      } 
+      if (slasher.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 3;
+      } 
+      if (slasher.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 3;
+      } 
+      if (slasher.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 3;
+      } 
+      if (slasher.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 3;
+      }
+      if (slasher.isTouching(knight)) {
+        knighthealth = knighthealth - 3;
+      } 
+      if (slasher.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 3;
+      }
+      if (slasher.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 3;
+      }
+      if (slasher.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 3;
+      } 
+      if (slasher.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 3;
+      } 
+      if (slasher.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 3;
+      } 
+      if (slasher.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 3;
+      } 
+      if (slasher.isTouching(rram)) {
+        rramhealth = rramhealth - 3;
+      }
+      if (slasher.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 3;
+      } 
+      if (slasher.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 3;
+      }
+      if (slasher.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 3;
+      }
+      if (slasher.isTouching(tower_red)) {
+        towerredhealth =  towerredhealth - 3;
+      }
+    }
+  } else {
+    slasher.velocityX = 0.75;
+    slasher.setAnimation("SlasherWalk");
+  }
+  if (slasherhealth < 1) {
+    slasher.x = 98;
+    slasher.y = 360;
+    slasher.visible = true;
+    slasher.scale = 0.25;
+  }
+}
+
+
+function slasherspawn() {
+  if (keyDown("x") && (coinsblue > 60) && (slasherhealth < 1)){
+      slasherhealth = 8;
+      coinsblue = coinsblue - 60;
+      slasher.visible = true;
+      if (bluelane == 1) {
+      slasher.y = 135;
+      slasher.x = 45;
+      }
+      if (bluelane == 2) {
+      slasher.y = 200;
+      slasher.x = 38;
+      }
+      if (bluelane == 3) {
+      slasher.y = 245;
+      slasher.x = 35;
+      }
+    }
+}
+
+function bknightattacks() {
+  if (bknight.isTouching(red)) {
+    bknightattack ++;
+    bknight.velocityX = 0;
+    bknight.scale = 0.375;
+    if (bknightattack < 50) {
+      bknight.setAnimation("BknightIdle");
+    }
+    if ((bknightattack > 50) && (bknightattack < 70)) {
+      bknight.setAnimation("BknightAttack");
+    }
+    if (bknightattack > 70) {
+      bknightattack = 1;
+      if (bknight.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 3;
+      } else if (bknight.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 3;
+      } else if (bknight.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 3;
+      } else if (bknight.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 3;
+      } else if (bknight.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 3;
+      } else if (bknight.isTouching(knight)) {
+        knighthealth = knighthealth - 3;
+      } else if (bknight.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 3;
+      } else if (bknight.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 3;
+      } else if (bknight.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 3;
+      } else if (bknight.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 3;
+      } else if (bknight.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 3;
+      } else if (bknight.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 3;
+      } else if (bknight.isTouching(rram)) {
+        rramhealth = rramhealth - 3;
+      } else if (bknight.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 3;
+      } else if (bknight.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 3;
+      } else if (bknight.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 3;
+      } else if (bknight.isTouching(tower_red)) {
+        towerredhealth =  towerredhealth - 3;
+      }
+    }
+  } else {
+    bknight.velocityX = 0.8;
+    bknight.setAnimation("BknightWalk");
+  }
+  if (bknighthealth < 1) {
+    bknight.x = 34;
+    bknight.y = 324;
+    bknight.visible = true;
+    bknight.scale = 0.2;
+    bknighthealth = 0;
+    bknightattack = 1;
+  }
+}
+
+function bknightspawn() {
+  if (keyDown("q") && (coinsblue > 40) && (bknighthealth < 1)){
+      bknighthealth = 10;
+      coinsblue = coinsblue - 40;
+      bknight.scale = 0.375;
+      bknight.visible = true;
+      if (bluelane == 1) {
+      bknight.y = 135;
+      bknight.x = 45;
+      }
+      if (bluelane == 2) {
+      bknight.y = 190;
+      bknight.x = 28;
+      }
+      if (bluelane == 3) {
+      bknight.y = 245;
+      bknight.x = 15;
+      }
+    }
+}
+
+function bcavalryattacks() {
+  if (bcavalry.isTouching(red)) {
+    bcavalryattack ++;
+    bcavalry.velocityX = 0;
+    bcavalry.scale = 0.2;
+    if (bcavalryattack < 30) {
+      bcavalry.setAnimation("bCavalryIdle");
+    }
+    if ((bcavalryattack > 30) && (bcavalryattack < 47)) {
+      bcavalry.setAnimation("bCavalryAttack");
+    }
+    if (bcavalryattack > 47) {
+      bcavalryattack = 1;
+      if (bcavalryrush == 1) {
+        bcavalrydamage = 4;
+      } else {
+        bcavalrydamage = 2;
+      }
+      if (bcavalry.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - bcavalrydamage/2;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - bcavalrydamage/2;        
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - bcavalrydamage/2;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - bcavalrydamage/2;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(knight)) {
+        knighthealth = knighthealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - bcavalrydamage/2;
+      } else if (bcavalry.isTouching(rram)) {
+        rramhealth = rramhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      } else if (bcavalry.isTouching(tower_red)) {
+        towerredhealth =  towerredhealth - bcavalrydamage;
+        bcavalryrush = 0;
+      }
+    }
+  } else {
+    bcavalry.velocityX = 1.25;
+    bcavalry.setAnimation("bCavalry");
+    bcavalryrush = 1;
+  }
+    if (bcavalryhealth < 1) {
+      bcavalry.x = 104;
+      bcavalry.y = 324;
+      bcavalry.scale = 0.1;
+      bcavalry.visible = true;
+      bcavalryhealth = 0;
+    }
+}
+
+function bcavalryspawn() {
+  if (bcavalryhealth < 1) {
+    if (keyDown("r") && (coinsblue > 50)){
+      bcavalryhealth = 11;
+      bcavalry.scale = 0.2;
+      coinsblue = coinsblue - 50;
+      bcavalry.visible = true;
+      if (bluelane == 1) {
+        bcavalry.y = 135;
+        bcavalry.x = 45;
+      }
+       if (bluelane == 2) {
+        bcavalry.y = 190;
+        bcavalry.x = 28;
+       }
+      if (bluelane == 3) {
+        bcavalry.y = 250;
+        bcavalry.x = 15;
+      }
+    }
+  }
+}
+
+function berserkerattacks() {
+  if (berserker.isTouching(red)) {
+    berserkerattack ++;
+    berserker.velocityX = 0;
+    if (berserkerattack < 20) {
+      berserker.setAnimation("BerserkerIdle");
+    }
+    if ((berserkerattack > 20) && (berserkerattack < 40)) {
+      berserker.setAnimation("BerserkerAttack");
+    }
+    if (berserkerattack > 40) {
+      berserkerattack = 1;
+      if (berserker.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 3;
+      } else if (berserker.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 3;
+      } else if (berserker.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 3;
+      } else if (berserker.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 3;
+      } else if (berserker.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 3;
+      } else if (berserker.isTouching(knight)) {
+        knighthealth = knighthealth - 3;
+      } else if (berserker.isTouching(cavalry)) {
+       cavalryhealth = cavalryhealth - 3;
+      } else if (berserker.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 3;
+      } else if (berserker.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 3;
+      } else if (berserker.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 3;
+      } else if (berserker.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 3;
+      } else if (berserker.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 3;
+      } else if (berserker.isTouching(rram)) {
+        rramhealth = rramhealth - 3;
+      } else if (berserker.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 3;
+      } else if (berserker.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 3;
+      } else if (berserker.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 3;
+      } else if (berserker.isTouching(tower_red)) {
+        towerredhealth =  towerredhealth - 3;
+      }
+    }
+  } else {
+    berserker.velocityX = 0.85;
+    berserker.setAnimation("BerserkerWalk");
+  }
+  if (berserkerhealth < 1) {
+    berserker.x = 80;
+    berserker.y = 324;
+    berserker.visible = true;
+    berserker.scale = 0.2;
+    berserkerhealth = 0;
+    berserkerattack = 1;
+  }
+}
+
+function berserkerspawn() {
+  if (keyDown("e") && (coinsblue > 50) && (berserkerhealth < 1)){
+      berserkerhealth = 7;
+      berserker.scale = 0.375;
+      coinsblue = coinsblue - 50;
+      berserker.visible = true;
+      if (bluelane == 1) {
+      berserker.y = 135;
+      berserker.x = 45;
+      }
+      if (bluelane == 2) {
+      berserker.y = 190;
+      berserker.x = 28;
+      }
+      if (bluelane == 3) {
+      berserker.y = 245;
+      berserker.x = 15;
+      }
+    }
+}
+
+function pikemanattacks() {
+  pike.x = pikeman.x + 12;
+  pike.y = pikeman.y + 2;
+  if (pike.isTouching(red)) {
+    pikemanattack ++;
+    pikeman.velocityX = 0;
+    if (pikemanattack < 30) {
+      pike.visible = true;
+      pikeman.setAnimation("Pikeman");
+      pike.setAnimation("PikeIdle");
+    }
+    if ((pikemanattack > 30) && (pikemanattack < 60)) {
+      pikeman.setAnimation("PikemanThrust");
+      pike.setAnimation("Pike");
+    }
+    if (pikemanattack > 60) {
+      pikemanattack = 1;
+      if (pike.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 2;
+      } else if (pike.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 2;
+      } else if (pike.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 2;
+      } else if (pike.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 2;
+      } else if (pike.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 3;
+      } else if (pike.isTouching(knight)) {
+        knighthealth = knighthealth - 2;
+      } else if (pike.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 4;
+      } else if (pike.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 2;
+      } else if (pike.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 2;
+      } else if (pike.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 2;
+      } else if (pike.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 2;
+      } else if (pike.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 2;
+      } else if (pike.isTouching(rram)) {
+        rramhealth = rramhealth - 2;
+      } else if (pike.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 2;
+      } else if (pike.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 2;
+      } else if (pike.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 2;
+      } else if (pike.isTouching(tower_red)) {
+        towerredhealth =  towerredhealth - 2;
+      }
+    }
+  } else {
+    pikeman.velocityX = 0.6;
+    pikeman.setAnimation("PikemanWalk");
+    pike.setAnimation("PikeIdle");
+    pike.visible = true;
+  }
+  if (pikemanhealth < 1) {
+    pikeman.x = 80;
+    pikeman.y = 360;
+    pikeman.scale = 0.25;
+    pike.scale = 0.25;
+    pikeman.visible = true;
+    pike.visible = true;
+    pikemanhealth = 0;
+    pikemanattack = 1;
+  }
+}
+
+function pikemanspawn() {
+  if (keyDown("z") && (coinsblue > 30) && (pikemanhealth < 1)){
+      pikemanhealth = 7;
+      pikeman.scale = 0.45;
+      pike.scale = 0.45;
+      coinsblue = coinsblue - 30;
+      pikeman.visible = true;
+      if (bluelane == 1) {
+      pikeman.y = 135;
+      pikeman.x = 45;
+      }
+      if (bluelane == 2) {
+      pikeman.y = 190;
+      pikeman.x = 28;
+      }
+      if (bluelane == 3) {
+      pikeman.y = 245;
+      pikeman.x = 15;
+      }
+    }
+}
+
+function ramattacking() {
+  if (ram.isTouching(red)) {
+    ramattack ++;
+    ram.velocityX = 0;
+    if (ramattack < 60) {
+      ram.setAnimation("BatteringRamIdle");
+    }
+    if ((ramattack > 60) && (ramattack < 75)) {
+      ram.setAnimation("BatteringRamAttack");
+    }
+    if (ramattack > 75) {
+      ramattack = 1;
+      if (ram.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 1;
+      } else if (ram.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 1;
+      } else if (ram.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 1;
+      } else if (ram.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 1;
+      } else if (ram.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 1;
+      } else if (ram.isTouching(knight)) {
+        knighthealth = knighthealth - 1;
+      } else if (ram.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 1;
+      } else if (ram.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 1;
+      } else if (ram.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 1;
+      } else if (ram.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 1;
+      } else if (ram.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 1;
+      } else if (ram.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 1;
+      } else if (ram.isTouching(rram)) {
+        rramhealth = rramhealth - 1;
+      } else if (ram.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 1;
+      } else if (ram.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 1;
+      } else if (ram.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 1;
+      } else if (ram.isTouching(tower_red)) {
+        towerredhealth =  towerredhealth - 10;
+      }
+    }
+  } else {
+    ram.velocityX = 0.3;
+    ram.setAnimation("BatteringRamWalk");
+  }
+  if (ramhealth < 1) {
+    ram.x = 143;
+    ram.y = 359;
+    ram.scale = 0.25;
+    ram.visible = true;
+    ramhealth = 0;
+    ramattack = 1;
+  }
+}
+
+function ramspawn() {
+  if ((keyDown("c")) && (ramhealth < 1) && (coinsblue > 50)) {
+      ramhealth = 15;
+      ram.scale = 0.45;
+      coinsblue = coinsblue - 50;
+      ram.visible = true;
+      if (bluelane == 1) {
+      ram.y = 135;
+      ram.x = 45;
+      }
+      if (bluelane == 2) {
+      ram.y = 190;
+      ram.x = 28;
+      }
+      if (bluelane == 3) {
+      ram.y = 245;
+      ram.x = 15;
+      }
+    }
+}
+
+function archerattacks() {
+  archerrange.y = archer.y;
+  archerrange.x = archer.x + 40;
+  arrow.y = archer.y;
+  if (archerrange.isTouching(red)) {
+    archerattack ++;
+    archer.velocityX = 0;
+    if (archerattack < 45) {
+      archer.setAnimation("ArcherIdle");
+      arrow.velocityX = 0;
+      arrow.visible = false;
+    }
+    if ((archerattack > 45) && (archerattack < 50)) {
+      archer.setAnimation("ArcherAttack");
+      arrow.x = archer.x;
+    }
+    if (archerattack > 50) {
+      arrow.velocityX = 2;
+      arrow.visible = true;
+      if (arrow.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(knight)) {
+        knighthealth = knighthealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rram)) {
+        rramhealth = rramhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      } else if (arrow.isTouching(tower_red)) {
+        towerredhealth =  towerredhealth - 2;
+        arrow.x = archer.x;
+        archerattack = 1;
+      }
+    }
+  } else {
+    archer.velocityX = 0.4;
+    archer.setAnimation("ArcherWalk");
+    arrow.x = archer.x;
+    arrow.visible = false;
+  }
+  if (archerhealth < 1) {
+    archer.x = 128;
+    archer.y = 324;
+    archer.scale = 0.2;
+    archer.visible = true;
+    arrow.visible = false;
+    archerhealth = 0;
+  }
+}
+
+function archerspawn() {
+  if (keyDown("a") && (coinsblue > 30) && (archerhealth < 1)){
+      archerhealth = 4;
+      coinsblue = coinsblue - 30;
+      archer.visible = true;
+      archer.scale = 0.375;
+      if (bluelane == 1) {
+      archer.y = 135;
+      archer.x = 45;
+      }
+      if (bluelane == 2) {
+      archer.y = 190;
+      archer.x = 28;
+      }
+      if (bluelane == 3) {
+      archer.y = 245;
+      archer.x = 15;
+      }
+    }
+}
+
+function pavisierattacks() {
+  pavisierrange.y = pavisier.y;
+  pavisierrange.x = pavisier.x + 40;
+  pavisierarrow.y = pavisier.y;
+  if (pavisierrange.isTouching(red)) {
+    paviseon = 1;
+    paviseplace ++;
+    pavisier.velocityX = 0;
+    if (paviseplace < 40) {
+      pavisier.setAnimation("PavisierShield");
+      pavise.y = pavisier.y + 10;
+      pavise.x = pavisier.x + 10;
+      pavisehealth = 8;
+      pavise.visible = false;
+    } else if ((paviseplace > 40) && (paviseplace < 60)) {
+      pavise.visible = true;
+      pavisier.setAnimation("PavisierPrep");
+    } else {
+      pavisierattack ++;
+      if ((pavisierattack < 85)) {
+        pavisier.setAnimation("PavisierIdle");
+        pavisierarrow.velocityX = 0;
+        pavisierarrow.visible = false;
+      }
+      if ((pavisierattack > 85) && (pavisierattack < 90)) {
+        pavisier.setAnimation("PavisierAttack");
+        pavisierarrow.x = pavisier.x;
+      }
+      if ((pavisierattack > 90)) {
+        pavisierarrow.velocityX = 2;
+        pavisierarrow.visible = true;
+        if (pavisierarrow.isTouching(rphalanx)) {
+          rphalanxhealth = rphalanxhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rphalanx2)) {
+          rphalanx2health = rphalanx2health - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rphalanx3)) {
+          rphalanx3health = rphalanx3health - 1;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rpavise)) {
+          rpavisehealth = rpavisehealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rslasher)) {
+          rslasherhealth = rslasherhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(knight)) {
+          knighthealth = knighthealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(cavalry)) {
+          cavalryhealth = cavalryhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rfootman)) {
+          rfootmanhealth = rfootmanhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rfootman2)) {
+          rfootman2health = rfootman2health - 1;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rfootman3)) {
+          rfootman3health = rfootman3health - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rberserker)) {
+          rberserkerhealth = rberserkerhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rpikeman)) {
+          rpikemanhealth = rpikemanhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rram)) {
+          rramhealth = rramhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rarcher)) {
+          rarcherhealth = rarcherhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rpavisier)) {
+          rpavisierhealth = rpavisierhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(rcannon)) {
+          rcannonhealth = rcannonhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        } else if (pavisierarrow.isTouching(tower_red)) {
+          towerredhealth =  towerredhealth - 3;
+          pavisierarrow.x = pavisier.x;
+          pavisierattack = 1;
+        }
+      }
+    }
+  } else if (paviseon < 1){
+    pavisier.velocityX = 0.25;
+    pavisier.setAnimation("PavisierWalk");
+    pavisierarrow.x = pavisier.x;
+    pavisierarrow.visible = false;
+  } else if (paviseon > 0){
+    pavisier.velocityX = 0;
+    pavisierarrow.velocityX = 0;
+    pavisierarrow.visible = false;
+    pavisier.setAnimation("PavisierIdle");
+    pavisierattack = 1;
+  }
+  if (pavisierhealth < 1) {
+    pavisier.x = 32;
+    pavisier.y = 360;
+    pavisier.scale = 0.25;
+    pavisier.visible = true;
+    pavisierarrow.visible = false;
+    pavisierhealth = 0;
+  }
+  if (pavisehealth < 1) {
+    pavise.x = 0;
+    pavise.y = 0;
+    pavise.visible = false;
+    pavisehealth = 0;
+    if (pavisierrange.isTouching(red)) {
+      paviseon = 1;
+    } else {
+      paviseon = 0;
+      paviseplace = 0;
+    }
+  }
+}
+function pavisierspawn() {
+  if (keyDown("s") && (coinsblue > 40) && (pavisierhealth < 1)){
+      pavisierhealth = 3;
+      paviseon = 0;
+      pavisehealth = 8;
+      coinsblue = coinsblue - 34;
+      pavisier.visible = true;
+      pavisier.scale = 0.45;
+      pavise.scale = 0.45;
+      if (bluelane == 1) {
+      pavisier.y = 135;
+      pavisier.x = 45;
+      }
+      if (bluelane == 2) {
+      pavisier.y = 190;
+      pavisier.x = 28;
+      }
+      if (bluelane == 3) {
+      pavisier.y = 245;
+      pavisier.x = 15;
+      }
+    }
+}
+
+function cannonattacks() {
+  cannonrange.y = cannon.y;
+  cannonrange.x = cannon.x + 40;
+  cannonball.y = cannon.y;
+  if (cannonrange.isTouching(red)) {
+    cannonattack ++;
+    cannon.velocityX = 0;
+    if (cannonattack < 60) {
+      cannon.setAnimation("Cannoneer");
+      cannonball.velocityX = 0;
+      cannonball.visible = false;
+    }
+    if ((cannonattack > 60) && (cannonattack < 140)) {
+      cannon.setAnimation("CannoneerBlast");
+      cannonball.x = cannon.x + 30;
+    }
+    if (cannonattack > 140) {
+      cannonball.velocityX = 2;
+      cannonball.visible = true;
+      if (cannonball.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 4;
+        cannonball.x = cannon.x + 30;
+        archerattack = 1;
+      } 
+      if (cannonball.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 4;
+        cannonball.x = cannon.x + 30;
+        archerattack = 1;
+      }
+      if (cannonball.isTouching(knight)) {
+        knighthealth = knighthealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 4;
+        cannonball.x = cannon.x + 30;
+        archerattack = 1;
+      } 
+      if (cannonball.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rram)) {
+        rramhealth = rramhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      }
+      if (cannonball.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      } 
+      if (cannonball.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      }
+      if (cannonball.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      }
+      if (cannonball.isTouching(tower_red)) {
+        towerredhealth =  towerredhealth - 4;
+        cannonball.x = cannon.x + 30;
+        cannonattack = 1;
+      }
+    }
+  } else {
+    cannon.velocityX = 0.3;
+    cannon.setAnimation("CannoneerMove");
+    cannonball.x = cannon.x + 30;
+    cannonball.visible = false;
+  }
+  if (cannonhealth < 1) {
+    cannon.x = 60;
+    cannon.y = 359;
+    cannon.scale = 0.25;
+    cannon.visible = true;
+    cannonball.visible = false;
+    cannonhealth = 0;
+  }
+}
+
+function cannonspawn() {
+  if (keyDown("d") && (coinsblue > 50) && (cannonhealth < 1)){
+      cannonhealth = 6;
+      coinsblue = coinsblue - 50;
+      cannon.visible = true;
+      cannon.scale = 0.45;
+      if (bluelane == 1) {
+      cannon.y = 135;
+      cannon.x = 65;
+      }
+      if (bluelane == 2) {
+      cannon.y = 190;
+      cannon.x = 48;
+      }
+      if (bluelane == 3) {
+      cannon.y = 245;
+      cannon.x = 35;
+      }
+    }
+}
+
+function footmanattacks() {
+  if (footman.isTouching(red)) {
+    footmanattack ++;
+    footman.velocityX = 0;
+    if (footmanattack < 40) {
+      footman.scale = 0.45;
+      if (footmanlook == 1){
+        footman.setAnimation("FootmanRedIdle");
+      } else if (footmanlook == 2) {
+        footman.setAnimation("FootmanGreenIdle");
+      } else if (footmanlook == 3) {
+        footman.setAnimation("FootmanBlueIdle");
+      } else if (footmanlook == 4) {
+        footman.setAnimation("FootmanOrangeIdle");
+      } else if (footmanlook == 5) {
+        footman.setAnimation("FootmanPurpleIdle");
+      } else if (footmanlook == 6) {
+        footman.setAnimation("FootmanBlackIdle");
+      }
+    } else if ((footmanattack > 50) && (footmanattack < 70)) {
+      if (footmanlook == 1){
+        footman.setAnimation("FootmanRed");
+      } else if (footmanlook == 2) {
+        footman.setAnimation("FootmanGreen");
+      } else if (footmanlook == 3) {
+        footman.setAnimation("FootmanBlue");
+      } else if (footmanlook == 4) {
+        footman.setAnimation("FootmanOrange");
+      } else if (footmanlook == 5) {
+        footman.setAnimation("FootmanPurple");
+      } else if (footmanlook == 6) {
+        footman.setAnimation("FootmanBlack");
+      } 
+      footman.scale = 0.45;
+    }
+    if (footmanattack > 70) {
+      footmanattack = 1;
+      if (footman.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 2;
+      } else if (footman.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 2;
+      } else if (footman.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 2;
+      } else if (footman.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 2;
+      } else if (footman.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 2;
+      } else if (footman.isTouching(knight)) {
+        knighthealth = knighthealth - 2;
+      } else if (footman.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 2;
+      } else if (footman.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 2;
+      } else if (footman.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 2;
+      } else if (footman.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 2;
+      } else if (footman.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 2;
+      } else if (footman.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 2;
+      } else if (footman.isTouching(rram)) {
+        rramhealth = rramhealth - 2;
+      } else if (footman.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 2;
+      } else if (footman.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 2;
+      } else if (footman.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 2;
+      } else if (footman.isTouching(tower_red)) {
+        towerredhealth = towerredhealth - 2;
+      }
+    }
+  } else {
+    footman.velocityX = 0.5;
+    footman.scale = 0.45;
+    if (footmanlook == 1){
+      footman.setAnimation("FootmanRedWalk");
+    } else if (footmanlook == 2) {
+      footman.setAnimation("FootmanGreenWalk");
+    } else if (footmanlook == 3) {
+      footman.setAnimation("FootmanBlueWalk");
+    } else if (footmanlook == 4) {
+      footman.setAnimation("FootmanOrangeWalk");
+    } else if (footmanlook == 5) {
+      footman.setAnimation("FootmanPurpleWalk");
+    } else if (footmanlook == 6) {
+      footman.setAnimation("FootmanBlackWalk");
+      } 
+  }
+  if (footmanhealth < 1) {
+    footman.x = 150;
+    footman.y = 330;
+    footman.visible = true;
+    footman.scale = 0.25;
+    footmanhealth = 0;
+    footman.setAnimation("FootmanRedIdle");
+  }
+}
+
+function footman2attacks() {
+  if (footman2.isTouching(red)) {
+    footman2attack ++;
+    footman2.velocityX = 0;
+    if (footman2attack < 40) {
+      footman2.scale = 0.45;
+      if (footman2look == 1){
+        footman2.setAnimation("FootmanRedIdle");
+      } else if (footman2look == 2) {
+        footman2.setAnimation("FootmanGreenIdle");
+      } else if (footman2look == 3) {
+        footman2.setAnimation("FootmanBlueIdle");
+      } else if (footman2look == 4) {
+        footman2.setAnimation("FootmanOrangeIdle");
+      } else if (footman2look == 5) {
+        footman2.setAnimation("FootmanPurpleIdle");
+      } else if (footman2look == 6) {
+        footman2.setAnimation("FootmanBlackIdle");
+      }
+    } else if ((footman2attack > 50) && (footman2attack < 70)) {
+      if (footman2look == 1){
+        footman2.setAnimation("FootmanRed");
+      } else if (footman2look == 2) {
+        footman2.setAnimation("FootmanGreen");
+      } else if (footman2look == 3) {
+        footman2.setAnimation("FootmanBlue");
+      } else if (footman2look == 4) {
+        footman2.setAnimation("FootmanOrange");
+      } else if (footman2look == 5) {
+        footman2.setAnimation("FootmanPurple");
+      } else if (footman2look == 6) {
+        footman2.setAnimation("FootmanBlack");
+      } 
+      footman2.scale = 0.45;
+    }
+    if (footman2attack > 70) {
+      footman2attack = 1;
+      if (footman2.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 2;
+      } else if (footman2.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 2;
+      } else if (footman2.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 2;
+      } else if (footman2.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 2;
+      } else if (footman2.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 2;
+      } else if (footman2.isTouching(knight)) {
+        knighthealth = knighthealth - 2;
+      } else if (footman2.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 2;
+      } else if (footman2.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 2;
+      } else if (footman2.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 2;
+      } else if (footman2.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 2;
+      } else if (footman2.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 2;
+      } else if (footman2.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 2;
+      } else if (footman2.isTouching(rram)) {
+        rramhealth = rramhealth - 2;
+      } else if (footman2.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 2;
+      } else if (footman2.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 2;
+      } else if (footman2.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 2;
+      } else if (footman2.isTouching(tower_red)) {
+        towerredhealth = towerredhealth - 2;
+      }
+    }
+  } else {
+    footman2.velocityX = 0.5;
+    footman2.scale = 0.45;
+    if (footman2look == 1){
+      footman2.setAnimation("FootmanRedWalk");
+    } else if (footman2look == 2) {
+      footman2.setAnimation("FootmanGreenWalk");
+    } else if (footman2look == 3) {
+      footman2.setAnimation("FootmanBlueWalk");
+    } else if (footman2look == 4) {
+      footman2.setAnimation("FootmanOrangeWalk");
+    } else if (footman2look == 5) {
+      footman2.setAnimation("FootmanPurpleWalk");
+    } else if (footman2look == 6) {
+      footman2.setAnimation("FootmanBlackWalk");
+      } 
+  }
+  if (footman2health < 1) {
+    footman2.x = 150;
+    footman2.y = 324;
+    footman2.visible = true;
+    footman2.scale = 0.25;
+    footman2health = 0;
+  }
+}
+
+function footman3attacks() {
+  if (footman3.isTouching(red)) {
+    footman3attack ++;
+    footman3.velocityX = 0;
+    if (footman3attack < 40) {
+      footman3.scale = 0.45;
+      if (footman3look == 1){
+        footman3.setAnimation("FootmanRedIdle");
+      } else if (footman3look == 2) {
+        footman3.setAnimation("FootmanGreenIdle");
+      } else if (footman3look == 3) {
+        footman3.setAnimation("FootmanBlueIdle");
+      } else if (footman3look == 4) {
+        footman3.setAnimation("FootmanOrangeIdle");
+      } else if (footman3look == 5) {
+        footman3.setAnimation("FootmanPurpleIdle");
+      } else if (footman3look == 6) {
+        footman3.setAnimation("FootmanBlackIdle");
+      }
+    } else if ((footman3attack > 50) && (footman3attack < 70)) {
+      if (footman3look == 1){
+        footman3.setAnimation("FootmanRed");
+      } else if (footman3look == 2) {
+        footman3.setAnimation("FootmanGreen");
+      } else if (footman3look == 3) {
+        footman3.setAnimation("FootmanBlue");
+      } else if (footman3look == 4) {
+        footman3.setAnimation("FootmanOrange");
+      } else if (footman3look == 5) {
+        footman3.setAnimation("FootmanPurple");
+      } else if (footman3look == 6) {
+        footman3.setAnimation("FootmanBlack");
+      } 
+      footman3.scale = 0.45;
+    }
+    if (footman3attack > 70) {
+      footman3attack = 1;
+      if (footman3.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 2;
+      } else if (footman3.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 2;
+      } else if (footman3.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 2;
+      } else if (footman3.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 2;
+      } else if (footman3.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 2;
+      } else if (footman3.isTouching(knight)) {
+        knighthealth = knighthealth - 2;
+      } else if (footman3.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 2;
+      } else if (footman3.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 2;
+      } else if (footman3.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 2;
+      } else if (footman3.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 2;
+      } else if (footman3.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 2;
+      } else if (footman3.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 2;
+      } else if (footman3.isTouching(rram)) {
+        rramhealth = rramhealth - 2;
+      } else if (footman3.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 2;
+      } else if (footman3.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 2;
+      } else if (footman3.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 2;
+      } else if (footman3.isTouching(tower_red)) {
+        towerredhealth = towerredhealth - 2;
+      }
+    }
+  } else {
+    footman3.velocityX = 0.5;
+    footman3.scale = 0.45;
+    if (footman3look == 1){
+      footman3.setAnimation("FootmanRedWalk");
+    } else if (footman3look == 2) {
+      footman3.setAnimation("FootmanGreenWalk");
+    } else if (footman3look == 3) {
+      footman3.setAnimation("FootmanBlueWalk");
+    } else if (footman3look == 4) {
+      footman3.setAnimation("FootmanOrangeWalk");
+    } else if (footman3look == 5) {
+      footman3.setAnimation("FootmanPurpleWalk");
+    } else if (footman3look == 6) {
+      footman3.setAnimation("FootmanBlackWalk");
+      } 
+  }
+  if (footman3health < 1) {
+    footman3.x = 150;
+    footman3.y = 318;
+    footman3.visible = true;
+    footman3.scale = 0.25;
+    footman3health = 0;
+  }
+}
+
+
+function footmanspawn() {
+    if ((footmanhealth < 1) && (footman2health < 1) && (footman3health < 1))
+      if (keyDown("f") && (coinsblue > 70)){
+        footmanhealth = 5;
+        footmanlook = randomNumber(1,6);
+        footman2health = 5;
+        footman2look = randomNumber(1,6);
+        footman3health = 5;
+        footman3look = randomNumber(1,6);
+        coinsblue = coinsblue - 70;
+        footman.visible = true;
+        footman2.visible = true;
+        footman3.visible = true;
+        if (bluelane == 1) {
+          footman.y = 125;
+          footman.x = randomNumber(38,52);
+          footman2.y = 135;
+          footman2.x = randomNumber(38,52);
+          footman3.y = 145;
+          footman3.x = randomNumber(38,52);
+        }
+        if (bluelane == 2) {
+          footman.y = 185;
+          footman.x = randomNumber(20,35);
+          footman2.y = 195;
+          footman2.x = randomNumber(20,35);
+          footman3.y = 205;  
+          footman3.x = randomNumber(20,35);
+        }
+        if (bluelane == 3) {
+          footman.y = 235;
+          footman.x = randomNumber(10,20);
+          footman2.y = 245;
+          footman2.x = randomNumber(10,20);
+          footman3.y = 255; 
+          footman3.x = randomNumber(10,20);
+        }
+     }
+ }
+ 
+function phalanges() {
+  if (phalanx.isTouching(red)) {
+    phalanxattack ++;
+    phalanx.velocityX = 0;
+    if (phalanxattack < 100) {
+      phalanx.setAnimation("Phalanx");
+      phalanx.scale = 0.175;
+      phalanxdefense = 1;
+    }
+    if ((phalanxattack > 100) && (phalanxattack < 120)) {
+      phalanx.setAnimation("PhalanxAttack");
+      phalanx.scale = 0.35;
+      phalanxdefense= 0;
+    }
+    if (phalanxattack > 120) {
+      phalanxattack = 1;
+      if (phalanx.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 1;
+      } else if (phalanx.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 1;
+      } else if (phalanx.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 1;
+      } else if (phalanx.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 1;
+      } else if (phalanx.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 1;
+      } else if (phalanx.isTouching(knight)) {
+        knighthealth = knighthealth - 1;
+      } else if (phalanx.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 1;
+      } else if (phalanx.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 1;
+      } else if (phalanx.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 1;
+      } else if (phalanx.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 1;
+      } else if (phalanx.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 1;
+      } else if (phalanx.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 1;
+      } else if (phalanx.isTouching(rram)) {
+        rramhealth = rramhealth - 1;
+      } else if (phalanx.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 1;
+      } else if (phalanx.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 1;
+      } else if (phalanx.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 1;
+      } else if (phalanx.isTouching(tower_red)) {
+        towerredhealth = towerredhealth - 1;
+      }
+    }
+  } else {
+    phalanx.velocityX = 0.25;
+    phalanx.setAnimation("PhalanxWalk");
+    phalanx.scale = 0.175;
+  }
+  if (phalanxhealth < 1) {
+    phalanx.x = 57;
+    phalanx.y = 318;
+    phalanx.scale = 0.1;
+    phalanx.visible = true;
+    phalanxhealth = 0;
+  }
+}
+
+function phalanges2() {
+  if (phalanx2.isTouching(red)) {
+    phalanx2attack ++;
+    phalanx2.velocityX = 0;
+    if (phalanx2attack < 100) {
+      phalanx2.setAnimation("Phalanx");
+      phalanx2.scale = 0.175;
+      phalanx2defense = 1;
+    }
+    if ((phalanx2attack > 100) && (phalanx2attack < 120)) {
+      phalanx2.setAnimation("PhalanxAttack");
+      phalanx2.scale = 0.35;
+      phalanx2defense= 0;
+    }
+    if (phalanx2attack > 120) {
+      phalanx2attack = 1;
+      if (phalanx2.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 1;
+      } else if (phalanx2.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 1;
+      } else if (phalanx2.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 1;
+      } else if (phalanx2.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 1;
+      } else if (phalanx2.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 1;
+      } else if (phalanx2.isTouching(knight)) {
+        knighthealth = knighthealth - 1;
+      } else if (phalanx2.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 1;
+      } else if (phalanx2.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 1;
+      } else if (phalanx2.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 1;
+      } else if (phalanx2.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 1;
+      } else if (phalanx2.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 1;
+      } else if (phalanx2.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 1;
+      } else if (phalanx2.isTouching(rram)) {
+        rramhealth = rramhealth - 1;
+      } else if (phalanx2.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 1;
+      } else if (phalanx2.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 1;
+      } else if (phalanx2.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 1;
+      } else if (phalanx2.isTouching(tower_red)) {
+        towerredhealth = towerredhealth - 1;
+      }
+    }
+  } else {
+    phalanx2.velocityX = 0.25;
+    phalanx2.setAnimation("PhalanxWalk");
+    phalanx2.scale = 0.175;
+  }
+  if (phalanx2health < 1) {
+    phalanx2.x = 57;
+    phalanx2.y = 324;
+    phalanx2.scale = 0.1;
+    phalanx2.visible = true;
+    phalanx2health = 0;
+  }
+}
+
+function phalanges3() {
+  if (phalanx3.isTouching(red)) {
+    phalanx3attack ++;
+    phalanx3.velocityX = 0;
+    if (phalanx3attack < 100) {
+      phalanx3.setAnimation("Phalanx");
+      phalanx3.scale = 0.175;
+      phalanx3defense = 1;
+    }
+    if ((phalanx3attack > 100) && (phalanx3attack < 120)) {
+      phalanx3.setAnimation("PhalanxAttack");
+      phalanx3.scale = 0.35;
+      phalanx3defense= 0;
+    }
+    if (phalanx3attack > 120) {
+      phalanx3attack = 1;
+      if (phalanx3.isTouching(rphalanx)) {
+        rphalanxhealth = rphalanxhealth - 1;
+      } else if (phalanx3.isTouching(rphalanx2)) {
+        rphalanx2health = rphalanx2health - 1;
+      } else if (phalanx3.isTouching(rphalanx3)) {
+        rphalanx3health = rphalanx3health - 1;
+      } else if (phalanx3.isTouching(rpavise)) {
+        rpavisehealth = rpavisehealth - 1;
+      } else if (phalanx3.isTouching(rslasher)) {
+        rslasherhealth = rslasherhealth - 1;
+      } else if (phalanx3.isTouching(knight)) {
+        knighthealth = knighthealth - 1;
+      } else if (phalanx3.isTouching(rfootman)) {
+        rfootmanhealth = rfootmanhealth - 1;
+      } else if (phalanx3.isTouching(rfootman2)) {
+        rfootman2health = rfootman2health - 1;
+      } else if (phalanx3.isTouching(rfootman3)) {
+        rfootman3health = rfootman3health - 1;
+      } else if (phalanx3.isTouching(cavalry)) {
+        cavalryhealth = cavalryhealth - 1;
+      } else if (phalanx3.isTouching(rberserker)) {
+        rberserkerhealth = rberserkerhealth - 1;
+      } else if (phalanx3.isTouching(rpikeman)) {
+        rpikemanhealth = rpikemanhealth - 1;
+      } else if (phalanx3.isTouching(rram)) {
+        rramhealth = rramhealth - 1;
+      } else if (phalanx3.isTouching(rarcher)) {
+        rarcherhealth = rarcherhealth - 1;
+      } else if (phalanx3.isTouching(rpavisier)) {
+        rpavisierhealth = rpavisierhealth - 1;
+      } else if (phalanx3.isTouching(rcannon)) {
+        rcannonhealth = rcannonhealth - 1;
+      } else if (phalanx3.isTouching(tower_red)) {
+        towerredhealth = towerredhealth - 1;
+      }
+    }
+  } else {
+    phalanx3.velocityX = 0.25;
+    phalanx3.setAnimation("PhalanxWalk");
+    phalanx3.scale = 0.175;
+  }
+  if (phalanx3health < 1) {
+    phalanx3.x = 57;
+    phalanx3.y = 330;
+    phalanx3.scale = 0.1;
+    phalanx3.visible = true;
+    phalanx3.health = 0;
+  }
+}
+
+function phalangesspawn() {
+    if ((phalanxhealth < 1) && (phalanx2health < 1) && (phalanx3health < 1))
+      if (keyDown("w") && (coinsblue > 40)){
+        phalanxhealth = 13;
+        phalanx2health = 13;
+        phalanx3health = 13;
+        coinsblue = coinsblue - 40;
+        phalanx.visible = true;
+        phalanx2.visible = true;
+        phalanx3.visible = true;
+        if (bluelane == 1) {
+          phalanx.y = 125;
+          phalanx.x = 45;
+          phalanx2.y = 135;
+          phalanx2.x = 45;
+          phalanx3.y = 145;
+          phalanx3.x = 45;
+        }
+        if (bluelane == 2) {
+          phalanx.y = 185;
+          phalanx.x = 28;
+          phalanx2.y = 195;
+          phalanx2.x = 28;
+          phalanx3.y = 205;  
+          phalanx3.x = 28;
+        }
+        if (bluelane == 3) {
+          phalanx.y = 235;
+          phalanx.x = 15;
+          phalanx2.y = 245;
+          phalanx2.x = 15;
+          phalanx3.y = 255; 
+          phalanx3.x = 15;
+        }
+     }
+ }
+
+function rslashers() {
+  rslasher.scale = 0.45;
+  if (rslasher.isTouching(blue)) {
+    rslasherattack ++;
+    rslasher.velocityX = 0;
+    if (rslasherattack < 40) {
+      rslasher.setAnimation("rSlasherIdle");
+    }
+    if ((rslasherattack > 40) && (rslasherattack < 48)) {
+      rslasher.setAnimation("rSlasherAttack");
+    }
+    if (rslasherattack > 48) {
+      rslasherattack = 1;
+      if (rslasher.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 3;
+      } 
+      if (rslasher.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 3;
+      } 
+      if (rslasher.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 3;
+      } 
+      if (rslasher.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 3;
+      } 
+      if (rslasher.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 3;
+      }
+      if (rslasher.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 3;
+      } 
+      if (rslasher.isTouching(footman)) {
+        footmanhealth = footmanhealth - 3;
+      } 
+      if (rslasher.isTouching(footman2)) {
+        footman2health = footman2health - 3;
+      } 
+      if (rslasher.isTouching(footman3)) {
+        footman3health = footman3health - 3;
+      } 
+      if (rslasher.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 3;
+      } 
+      if (rslasher.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 3;
+      } 
+      if (rslasher.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 3;
+      } 
+      if (rslasher.isTouching(ram)) {
+        ramhealth = ramhealth - 3;
+      }
+      if (rslasher.isTouching(archer)) {
+        archerhealth = archerhealth - 3;
+      } 
+      if (rslasher.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 3;
+      }
+      if (rslasher.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 3;
+      }
+      if (rslasher.isTouching(tower_blue)) {
+        towerbluehealth =  towerbluehealth - 3;
+      }
+    }
+  } else {
+    rslasher.velocityX = -0.75;
+    rslasher.setAnimation("rSlasherWalk");
+  }
+  if (rslasherhealth < 1) {
+    rslasher.x = 325;
+    rslasher.y = 360;
+    rslasher.scale = 0.25;
+    rslasher.visible = true;
+    rslasherhealth = 0;
+  }
+}
+
+function rslasherspawn() {
+  if (rslasherhealth < 1) {
+    if (keyDown("n") && (coinsred > 60)){
+      rslasherhealth = 8;
+      coinsred = coinsred - 60;
+      rslasher.visible = true;
+      if (redlane == 1) {
+        rslasher.y = 135;
+        rslasher.x = 360;
+      }
+       if (redlane == 2) {
+        rslasher.y = 190;
+        rslasher.x = 375;
+       }
+      if (redlane == 3) {
+        rslasher.y = 245;
+        rslasher.x = 390;
+      }
+    }
+  }
+}
+
+function knightattacks() {
+  if (knight.isTouching(blue)) {
+    knightattack ++;
+    knight.velocityX = 0;
+    if (knightattack < 50) {
+      knight.setAnimation("KnightIdle");
+    }
+    if ((knightattack > 50) && (knightattack < 70)) {
+      knight.setAnimation("KnightAttack");
+    }
+    if (knightattack > 70) {
+      knightattack = 1;
+      if (knight.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 3;
+      } else if (knight.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 3;
+      } else if (knight.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 3;
+      } else if (knight.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 3;
+      } else if (knight.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 3;
+      } else if (knight.isTouching(footman)) {
+        footmanhealth = footmanhealth - 3;
+      } else if (knight.isTouching(footman2)) {
+        footman2health = footman2health - 3;
+      } else if (knight.isTouching(footman3)) {
+        footman3health = footman3health - 3;
+      } else if (knight.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 3;
+      } else if (knight.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 3;
+      } else if (knight.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 3;
+      } else if (knight.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 3;
+      } else if (knight.isTouching(ram)) {
+        ramhealth = ramhealth - 3;
+      } else if (knight.isTouching(archer)) {
+        archerhealth = archerhealth - 3;
+      } else if (knight.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 3;
+      } else if (knight.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 3;
+      } else if (knight.isTouching(tower_blue)) {
+       towerbluehealth =  towerbluehealth - 3;
+      }
+    }
+  } else {
+    knight.velocityX = -0.8;
+    knight.setAnimation("KnightWalk");
+  }
+    if (knighthealth < 1) {
+      knight.x = 246;
+      knight.y = 324;
+      knight.scale = 0.2;
+      knight.visible = true;
+      knighthealth = 0;
+    }
+}
+
+function knightspawn() {
+  if (knighthealth < 1) {
+    if (keyDown("u") && (coinsred > 40)){
+      knighthealth = 10;
+      coinsred = coinsred - 40;
+      knight.visible = true;
+      knight.scale = 0.375;
+      if (redlane == 1) {
+        knight.y = 135;
+        knight.x = 360;
+      }
+       if (redlane == 2) {
+        knight.y = 190;
+        knight.x = 375;
+       }
+      if (redlane == 3) {
+        knight.y = 245;
+        knight.x = 390;
+      }
+    }
+  }
+}
+
+function cavalryattacks() {
+  if (cavalry.isTouching(blue)) {
+    cavalryattack ++;
+    cavalry.velocityX = 0;
+    if (cavalryattack < 30) {
+      cavalry.setAnimation("CavalryIdle");
+    }
+    if ((cavalryattack > 30) && (cavalryattack < 47)) {
+      cavalry.setAnimation("CavalryAttack");
+    }
+    if (cavalryattack > 47) {
+      cavalryattack = 1;
+      if (cavalryrush == 1) {
+        cavalrydamage = 4;
+      } else {
+        cavalrydamage = 2;
+      }
+      if (cavalry.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth- cavalrydamage/2;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - cavalrydamage/2;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - cavalrydamage/2;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(footman)) {
+        footmanhealth = footmanhealth- cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(footman2)) {
+        footman2health = footman2health - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(footman3)) {
+        footman3health = footman3health - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(pavise)) {
+        pavisehealth = pavisehealth - cavalrydamage/2;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(slasher)) {
+        slasherhealth = slasherhealth - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(bknight)) {
+        bknighthealth = bknighthealth - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - cavalrydamage/2;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(ram)) {
+        ramhealth = ramhealth - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(archer)) {
+        archerhealth = archerhealth - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(cannon)) {
+        cannonhealth = cannonhealth - cavalrydamage;
+        cavalryrush = 0;
+      } else if (cavalry.isTouching(tower_blue)) {
+        towerbluehealth =  towerbluehealth - cavalrydamage;
+        cavalryrush = 0;
+      }
+    }
+  } else {
+    cavalry.velocityX = -1.25;
+    cavalry.setAnimation("Cavalry");
+    cavalryrush = 1;
+  }
+    if (cavalryhealth < 1) {
+      cavalry.x = 319;
+      cavalry.y = 324;
+      cavalry.scale = 0.1;
+      cavalry.visible = true;
+      cavalryhealth = 0;
+    }
+}
+
+function cavalryspawn() {
+  if (cavalryhealth < 1) {
+    if (keyDown("p") && (coinsred > 50)){
+      cavalryhealth = 11;
+      cavalry.scale = 0.2;
+      coinsred = coinsred - 50;
+      cavalry.visible = true;
+      if (redlane == 1) {
+        cavalry.y = 135;
+        cavalry.x = 360;
+      }
+       if (redlane == 2) {
+        cavalry.y = 190;
+        cavalry.x = 375;
+       }
+      if (redlane == 3) {
+        cavalry.y = 245;
+        cavalry.x = 390;
+      }
+    }
+  }
+}
+
+function rberserkerattacks() {
+  if (rberserker.isTouching(blue)) {
+    rberserkerattack ++;
+    rberserker.velocityX = 0;
+    if (rberserkerattack < 20) {
+      rberserker.setAnimation("rBerserkerIdle");
+    }
+    if ((rberserkerattack > 20) && (rberserkerattack < 40)) {
+      rberserker.setAnimation("rBerserkerAttack");
+    }
+    if (rberserkerattack > 40) {
+      rberserkerattack = 1;
+      if (rberserker.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth- 3;
+      } else if (rberserker.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health- 3;
+      } else if (rberserker.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health- 3;
+      } else if (rberserker.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 3;
+      } else if (rberserker.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 3;
+      } else if (rberserker.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 3;
+      } else if (rberserker.isTouching(footman)) {
+        footmanhealth = footmanhealth- 3;
+      } else if (rberserker.isTouching(footman2)) {
+        footman2health = footman2health- 3;
+      } else if (rberserker.isTouching(footman3)) {
+        footman3health = footman3health - 3;
+      } else if (rberserker.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 3;
+      } else if (rberserker.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 3;
+      } else if (rberserker.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 3;
+      } else if (rberserker.isTouching(ram)) {
+        ramhealth = ramhealth - 3;
+      } else if (rberserker.isTouching(archer)) {
+        archerhealth = archerhealth - 3;
+      } else if (rberserker.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 3;
+      } else if (rberserker.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 3;
+      } else if (rberserker.isTouching(tower_blue)) {
+       towerbluehealth =  towerbluehealth - 3;
+      }
+    }
+  } else {
+    rberserker.velocityX = -0.85;
+    rberserker.setAnimation("rBerserkerWalk");
+  }
+  if (rberserkerhealth < 1) {
+    rberserker.x = 296;
+    rberserker.y = 324;
+    rberserker.scale = 0.2;
+    rberserker.visible = true;
+    rberserkerhealth = 0;
+    }
+}
+
+function rberserkerspawn() {
+  if (keyDown("o") && (coinsred > 50) && (rberserkerhealth < 1)){
+      rberserkerhealth = 7;
+      coinsred = coinsred - 50;
+      rberserker.visible = true;
+      rberserker.scale = 0.375;
+      if (redlane == 1) {
+      rberserker.y = 135;
+      rberserker.x = 360;
+      }
+      if (redlane == 2) {
+      rberserker.y = 190;
+      rberserker.x = 375;
+      }
+      if (redlane == 3) {
+      rberserker.y = 245;
+      rberserker.x = 390;
+      }
+    }
+}
+
+function rpikemanattacks() {
+  rpike.x = rpikeman.x - 12;
+  rpike.y = rpikeman.y + 2;
+  if (rpike.isTouching(blue)) {
+    rpikemanattack ++;
+    rpikeman.velocityX = 0;
+    if (rpikemanattack < 30) {
+      rpike.visible = true;
+      rpikeman.setAnimation("rPikeman");
+      rpike.setAnimation("rPikeIdle");
+    }
+    if ((rpikemanattack > 30) && (rpikemanattack < 60)) {
+      rpikeman.setAnimation("rPikemanThrust");
+      rpike.setAnimation("rPike");
+    }
+    if (rpikemanattack > 60) {
+      rpikemanattack = 1;
+      if (rpike.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 2;
+      } else if (rpike.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 2;
+      } else if (rpike.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 2;
+      } else if (rpike.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 2;
+      } else if (rpike.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 2;
+      } else if (rpike.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 2;
+      } else if (rpike.isTouching(footman)) {
+        footmanhealth = footmanhealth - 2;
+      } else if (rpike.isTouching(footman2)) {
+        footman2health = footman2health - 2;
+      } else if (rpike.isTouching(footman3)) {
+        footman3health = footman3health - 2;
+      } else if (rpike.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 4;
+      } else if (rpike.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 2;
+      } else if (rpike.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 2;
+      } else if (rpike.isTouching(ram)) {
+        ramhealth = ramhealth - 2;
+      } else if (rpike.isTouching(archer)) {
+        archerhealth = archerhealth - 2;
+      } else if (rpike.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 2;
+      } else if (rpike.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 2;
+      } else if (rpike.isTouching(tower_blue)) {
+        towerbluehealth =  towerbluehealth - 2;
+      }
+    }
+  } else {
+    rpikeman.velocityX = -0.6;
+    rpikeman.setAnimation("rPikemanWalk");
+    rpike.setAnimation("rPikeIdle");
+    rpike.visible = true;
+  }
+  if (rpikemanhealth < 1) {
+    rpikeman.x = 296;
+    rpikeman.y = 360;
+    rpikeman.visible = true;
+    rpike.visible = true;
+    rpikeman.scale = 0.25;
+    rpike.scale = 0.25;
+    rpikemanhealth = 0;
+    rpikemanattack = 1;
+  }
+}
+
+function rpikemanspawn() {
+  if (keyDown("b") && (coinsred > 30) && (rpikemanhealth < 1)){
+      rpikemanhealth = 7;
+      coinsred = coinsred - 30;
+      rpikeman.visible = true;
+      rpikeman.scale = 0.45;
+      rpike.scale = 0.45;
+      if (redlane == 1) {
+      rpikeman.y = 135;
+      rpikeman.x = 360;
+      }
+      if (redlane == 2) {
+      rpikeman.y = 190;
+      rpikeman.x = 375;
+      }
+      if (redlane == 3) {
+      rpikeman.y = 245;
+      rpikeman.x = 390;
+      }
+    }
+}
+
+function rramattacking() {
+  if (rram.isTouching(blue)) {
+    rramattack ++;
+    rram.velocityX = 0;
+    if (rramattack < 60) {
+      rram.setAnimation("rBatteringRamIdle");
+    }
+    if ((rramattack > 60) && (rramattack < 75)) {
+      rram.setAnimation("rBatteringRamAttack");
+    }
+    if (rramattack > 75) {
+      rramattack = 1;
+      if (rram.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 1;
+      } else if (rram.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 1;
+      } else if (rram.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 1;
+      } else if (rram.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 1;
+      } else if (rram.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 1;
+      } else if (rram.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 1;
+      } else if (rram.isTouching(footman)) {
+        footmanhealth = footmanhealth - 1;
+      } else if (rram.isTouching(footman2)) {
+        footman2health = footman2health - 1;
+      } else if (rram.isTouching(footman3)) {
+        footman3health = footman3health - 1;
+      } else if (rram.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 1;
+      } else if (rram.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 1;
+      } else if (rram.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 1;
+      } else if (rram.isTouching(ram)) {
+        ramhealth = ramhealth - 1;
+      } else if (rram.isTouching(archer)) {
+        archerhealth = archerhealth - 1;
+      } else if (rram.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 1;
+      } else if (rram.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 1;
+      } else if (rram.isTouching(tower_blue)) {
+        towerbluehealth = towerbluehealth - 10;
+      }
+    }
+  } else {
+    rram.velocityX = -0.3;
+    rram.setAnimation("rBatteringRamWalk");
+  }
+  if (rramhealth < 1) {
+    rram.x = 355;
+    rram.y = 360;
+    rram.scale = 0.25;
+    rram.visible = true;
+    rramhealth = 0;
+    rramattack = 1;
+  }
+}
+
+function rramspawn() {
+  if (keyDown("m") && (coinsred > 50) && (rramhealth < 1)){
+      rramhealth = 15;
+      rram.scale = 0.45;
+      coinsred = coinsred - 50;
+      rram.visible = true;
+      rram.scale = 0.45;
+      if (redlane == 1) {
+      rram.y = 135;
+      rram.x = 360;
+      }
+      if (redlane == 2) {
+      rram.y = 190;
+      rram.x = 375;
+      }
+      if (redlane == 3) {
+      rram.y = 245;
+      rram.x = 390;
+      }
+    }
+}
+
+function rarcherattacks() {
+  rarcherrange.y = rarcher.y;
+  rarcherrange.x = rarcher.x - 40;
+  rarrow.y = rarcher.y;
+  if (rarcherrange.isTouching(blue)) {
+    rarcherattack ++;
+    rarcher.velocityX = 0;
+    if (rarcherattack < 45) {
+      rarcher.setAnimation("rArcherIdle");
+      rarrow.velocityX = 0;
+      rarrow.visible = false;
+    }
+    if ((rarcherattack > 45) && (rarcherattack < 50)) {
+      rarcher.setAnimation("rArcherAttack");
+      rarrow.x = rarcher.x;
+    }
+    if (rarcherattack > 50) {
+      rarrow.velocityX = -2;
+      rarrow.visible = true;
+      if (rarrow.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 2;
+        rarrow.x = rarcher.x;
+        phalanxattack = 1;
+      } else if (rarrow.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(footman)) {
+        footmanhealth = footmanhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(footman2)) {
+        footman2health = footman2health - 2;
+        rarrow.x = rarcher.x;
+        phalanxattack = 1;
+      } else if (rarrow.isTouching(footman3)) {
+        footman3health = footman3health - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(ram)) {
+        ramhealth = ramhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(archer)) {
+        archerhealth = archerhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      } else if (rarrow.isTouching(tower_blue)) {
+        towerbluehealth = towerbluehealth - 2;
+        rarrow.x = rarcher.x;
+        rarcherattack = 1;
+      }
+    }
+  } else {
+    rarcher.velocityX = -0.4;
+    rarcher.setAnimation("rArcherWalk");
+    rarrow.x = rarcher.x;
+    rarrow.visible = false;
+  }
+  if (rarcherhealth < 1) {
+    rarcher.x = 344;
+    rarcher.y = 324;
+    rarcher.scale = 0.2;
+    rarcher.visible = true;
+    rarrow.visible = false;
+    rarcherhealth = 0;
+  }
+}
+
+function rarcherspawn() {
+  if (keyDown("h") && (coinsred > 30) && (rarcherhealth < 1)){
+      rarcherhealth = 4;
+      coinsred = coinsred - 30;
+      rarcher.visible = true;
+      rarcher.scale = 0.375;
+      if (redlane == 1) {
+      rarcher.y = 135;
+      rarcher.x = 360;
+      }
+      if (redlane == 2) {
+      rarcher.y = 190;
+      rarcher.x = 375;
+      }
+      if (redlane == 3) {
+      rarcher.y = 245;
+      rarcher.x = 390;
+      }
+    }
+}
+
+function rpavisierattacks() {
+  rpavisierrange.y = rpavisier.y;
+  rpavisierrange.x = rpavisier.x - 40;
+  rpavisierarrow.y = rpavisier.y;
+  if (rpavisierrange.isTouching(blue)) {
+    rpaviseon = 1;
+    rpaviseplace ++;
+    rpavisier.velocityX = 0;
+    if (rpaviseplace < 40) {
+      rpavisier.setAnimation("rPavisierShield");
+      rpavise.y = rpavisier.y + 10;
+      rpavise.x = rpavisier.x - 10;
+      rpavisehealth = 8;
+      rpavise.visible = false;
+    } else if ((rpaviseplace > 40) && (rpaviseplace < 60)) {
+      rpavise.visible = true;
+      rpavisier.setAnimation("rPavisierPrep");
+    } else {
+      rpavisierattack ++;
+      if ((rpavisierattack < 85)) {
+        rpavisier.setAnimation("rPavisierIdle");
+        rpavisierarrow.velocityX = 0;
+        rpavisierarrow.visible = false;
+      }
+      if ((rpavisierattack > 85) && (rpavisierattack < 90)) {
+        rpavisier.setAnimation("rPavisierAttack");
+        rpavisierarrow.x = rpavisier.x;
+      }
+      if ((rpavisierattack > 90)) {
+        rpavisierarrow.velocityX = -2;
+        rpavisierarrow.visible = true;
+        if (rpavisierarrow.isTouching(phalanx)) {
+          phalanxhealth = phalanxhealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(phalanx2)) {
+          phalanx2health = phalanx2health - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(phalanx3)) {
+          phalanx3health = phalanx3health - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(pavise)) {
+          pavisehealth = pavisehealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(slasher)) {
+          slasherhealth = slasherhealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(bknight)) {
+          bknighthealth = bknighthealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(footman)) {
+          footmanhealth = footmanhealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(footman2)) {
+          footman2health = footman2health - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(footman3)) {
+          footman3health = footman3health - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(bcavalry)) {
+          bcavalryhealth = bcavalryhealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(berserker)) {
+          berserkerhealth = rberserkerhealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(pikeman)) {
+          pikemanhealth = pikemanhealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(ram)) {
+          ramhealth = ramhealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(archer)) {
+          archerhealth = archerhealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(pavisier)) {
+          pavisierhealth = pavisierhealth - 3;
+          rpavisierarrow.x = pavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(cannon)) {
+          cannonhealth = cannonhealth - 3;
+          rpavisierarrow.x = pavisier.x;
+          rpavisierattack = 1;
+        } else if (rpavisierarrow.isTouching(tower_blue)) {
+          towerbluehealth =  towerbluehealth - 3;
+          rpavisierarrow.x = rpavisier.x;
+          rpavisierattack = 1;
+        }
+      }
+    }
+  } else if (rpaviseon < 1){
+    rpavisier.velocityX = -0.25;
+    rpavisier.setAnimation("rPavisierWalk");
+    rpavisierarrow.x = rpavisier.x;
+    rpavisierarrow.visible = false;
+  } else if (rpaviseon > 0){
+    rpavisier.velocityX = 0;
+    rpavisierarrow.velocityX = 0;
+    rpavisierarrow.visible = false;
+    rpavisier.setAnimation("rPavisierIdle");
+    rpavisierattack = 1;
+  }
+  if (rpavisierhealth < 1) {
+    rpavisier.x = 250;
+    rpavisier.y = 360;
+    rpavisierrange.scale = 0.1;
+    rpavisier.scale = 0.25;
+    rpavisier.visible = true;
+    rpavisierarrow.visible = false;
+    rpavisierhealth = 0;
+    rpavisier.setAnimation("rPavisierIdle");
+  }
+  if (rpavisehealth < 1) {
+    rpavise.x = 400;
+    rpavise.y = 400;
+    rpavise.visible = false;
+    rpavisehealth = 0;
+    if (rpavisierrange.isTouching(blue)) {
+      rpaviseon = 1;
+    } else {
+      rpaviseon = 0;
+      rpaviseplace = 0;
+    }
+  }
+}
+function rpavisierspawn() {
+  if (keyDown("j") && (coinsred > 40) && (rpavisierhealth < 1)){
+      rpavisierhealth = 3;
+      rpavisierrange.scale = 0.7;
+      rpavisehealth = 8;
+      rpavisier.scale = 0.45;
+      coinsred = coinsred - 34;
+      rpavisier.visible = true;
+      rpavisier.x = 15;
+      if (redlane == 1) {
+      rpavisier.y = 135;
+      rpavisier.x = 360;
+      }
+      if (redlane == 2) {
+      rpavisier.y = 190;
+      rpavisier.x = 375;
+      }
+      if (redlane == 3) {
+      rpavisier.y = 245;
+      rpavisier.x = 390;
+      }
+    }
+}
+
+function rcannonattacks() {
+  rcannonrange.y = rcannon.y;
+  rcannonrange.x = rcannon.x - 40;
+  rcannonball.y = rcannon.y;
+  if (rcannonrange.isTouching(blue)) {
+    rcannonattack ++;
+    rcannon.velocityX = 0;
+    if (rcannonattack < 60) {
+      rcannon.setAnimation("rCannon");
+      rcannonball.velocityX = 0;
+      rcannonball.visible = false;
+    }
+    if ((rcannonattack > 60) && (rcannonattack < 140)) {
+      rcannon.setAnimation("rCannonBlast");
+      rcannonball.x = rcannon.x - 30;
+    }
+    if (rcannonattack > 140) {
+      rcannonball.velocityX = -2;
+      rcannonball.visible = true;
+      if (rcannonball.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 4;
+        rcannonball.x = rcannon.x;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 4;
+        rcannonball.x = rcannon.x;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 4;
+        rcannonball.x = rcannon.x;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(footman)) {
+        footmanhealth = footmanhealth - 4;
+        rcannonball.x = rcannon.x;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(footman2)) {
+        footman2health = footman2health - 4;
+        rcannonball.x = rcannon.x;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(footman3)) {
+        footman3health = footman3health - 4;
+        rcannonball.x = rcannon.x;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(ram)) {
+        ramhealth = ramhealth - 4;
+        rcannonball.x = rcannon.x;
+        rcannonattack = 1;
+      }
+      if (rcannonball.isTouching(archer)) {
+        archerhealth = archerhealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 4;
+        rcannonball.x = rcannon.x - 30;
+        rcannonattack = 1;
+      } 
+      if (rcannonball.isTouching(tower_blue)) {
+        towerbluehealth = towerbluehealth - 4;
+        rcannonball.x = rcannon.x;
+        rcannonattack = 1;
+      }
+    }
+  } else {
+    rcannon.velocityX = -0.4;
+    rcannon.setAnimation("rCannonWalk");
+    rcannonball.x = rcannon.x - 30;
+    rcannonball.visible = false;
+  }
+  if (rcannonhealth < 1) {
+    rcannon.x = 271;
+    rcannon.y = 359;
+    rcannon.scale = 0.2;
+    rcannonrange.scale = 0.1;
+    rcannon.visible = true;
+    rcannonball.visible = false;
+    rcannonhealth = 0;
+  }
+}
+
+function rcannonspawn() {
+  if (keyDown("k") && (coinsred > 50) && (rcannonhealth < 1)){
+      rcannonhealth = 6;
+      coinsred = coinsred - 50;
+      rcannon.scale = 0.45;
+      rcannon.visible = true;
+      rcannonrange.scale = 0.5;
+      if (redlane == 1) {
+      rcannon.y = 135;
+      rcannon.x = 350;
+      }
+      if (redlane == 2) {
+      rcannon.y = 190;
+      rcannon.x = 365;
+      }
+      if (redlane == 3) {
+      rcannon.y = 245;
+      rcannon.x = 380;
+      }
+    }
+}
+
+function rfootmanattacks() {
+  if (rfootman.isTouching(blue)) {
+    rfootmanattack ++;
+    rfootman.velocityX = 0;
+    if (rfootmanattack < 50) {
+      rfootman.scale = 0.45;
+      if (rfootmanlook == 1){
+        rfootman.setAnimation("rFootmanRedIdle");
+      } else if (rfootmanlook == 2) {
+        rfootman.setAnimation("rFootmanGreenIdle");
+      } else if (rfootmanlook == 3) {
+        rfootman.setAnimation("rFootmanBlueIdle");
+      } else if (rfootmanlook == 4) {
+        rfootman.setAnimation("rFootmanOrangeIdle");
+      } else if (rfootmanlook == 5) {
+        rfootman.setAnimation("rFootmanPurpleIdle");
+      } else if (rfootmanlook == 6) {
+        rfootman.setAnimation("rFootmanBlackIdle");
+      }
+    } else if ((rfootmanattack > 50) && (rfootmanattack < 70)) {
+      if (rfootmanlook == 1){
+        rfootman.setAnimation("rFootmanRed");
+      } else if (rfootmanlook == 2) {
+        rfootman.setAnimation("rFootmanGreen");
+      } else if (rfootmanlook == 3) {
+        rfootman.setAnimation("rFootmanBlue");
+      } else if (rfootmanlook == 4) {
+        rfootman.setAnimation("rFootmanOrange");
+      } else if (rfootmanlook == 5) {
+        rfootman.setAnimation("rFootmanPurple");
+      } else if (rfootmanlook == 6) {
+        rfootman.setAnimation("rFootmanBlack");
+      } 
+      rfootman.scale = 0.45;
+    }
+    if (rfootmanattack > 70) {
+      rfootmanattack = 1;
+      if (rfootman.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 2;
+      } else if (rfootman.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 2;
+      } else if (rfootman.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 2;
+      } else if (rfootman.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 2;
+      } else if (rfootman.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 2;
+      } else if (rfootman.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 2;
+      } else if (rfootman.isTouching(footman)) {
+        footmanhealth = footmanhealth - 2;
+      } else if (rfootman.isTouching(footman2)) {
+        footman2health = footman2health - 2;
+      } else if (rfootman.isTouching(footman3)) {
+        footman3health = footman3health - 2;
+      } else if (rfootman.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 2;
+      } else if (rfootman.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 2;
+      } else if (rfootman.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 2;
+      } else if (rfootman.isTouching(ram)) {
+        ramhealth = ramhealth - 2;
+      } else if (rfootman.isTouching(archer)) {
+        archerhealth = archerhealth - 2;
+      } else if (rfootman.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 2;
+      } else if (rfootman.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 2;
+      } else if (rfootman.isTouching(tower_blue)) {
+        towerbluehealth =  towerbluehealth - 2;
+      }
+    }
+  } else {
+    rfootman.velocityX = -0.5;
+    rfootman.scale = 0.45;
+    if (rfootmanlook == 1){
+      rfootman.setAnimation("rFootmanRedWalk");
+    } else if (rfootmanlook == 2) {
+      rfootman.setAnimation("rFootmanGreenWalk");
+    } else if (rfootmanlook == 3) {
+      rfootman.setAnimation("rFootmanBlueWalk");
+    } else if (rfootmanlook == 4) {
+      rfootman.setAnimation("rFootmanOrangeWalk");
+    } else if (rfootmanlook == 5) {
+      rfootman.setAnimation("rFootmanPurpleWalk");
+    } else if (rfootmanlook == 6) {
+      rfootman.setAnimation("rFootmanBlackWalk");
+    } 
+  }
+  if (rfootmanhealth < 1) {
+    rfootman.x = 368;
+    rfootman.y = 318;
+    rfootman.visible = true;
+    rfootman.scale = 0.25;
+    rfootmanhealth = 0;
+  }
+}
+
+function rfootman2attacks() {
+  if (rfootman2.isTouching(blue)) {
+    rfootman2attack ++;
+    rfootman2.velocityX = 0;
+    if (rfootman2attack < 50) {
+      rfootman2.scale = 0.45;
+      if (rfootman2look == 1){
+        rfootman2.setAnimation("rFootmanRedIdle");
+      } else if (rfootman2look == 2) {
+        rfootman2.setAnimation("rFootmanGreenIdle");
+      } else if (rfootman2look == 3) {
+        rfootman2.setAnimation("rFootmanBlueIdle");
+      } else if (rfootman2look == 4) {
+        rfootman2.setAnimation("rFootmanOrangeIdle");
+      } else if (rfootman2look == 5) {
+        rfootman2.setAnimation("rFootmanPurpleIdle");
+      } else if (rfootman2look == 6) {
+        rfootman2.setAnimation("rFootmanBlackIdle");
+      }
+    } else if ((rfootman2attack > 50) && (rfootman2attack < 70)) {
+      if (rfootman2look == 1){
+        rfootman2.setAnimation("rFootmanRed");
+      } else if (rfootman2look == 2) {
+        rfootman2.setAnimation("rFootmanGreen");
+      } else if (rfootman2look == 3) {
+        rfootman2.setAnimation("rFootmanBlue");
+      } else if (rfootman2look == 4) {
+        rfootman2.setAnimation("rFootmanOrange");
+      } else if (rfootman2look == 5) {
+        rfootman2.setAnimation("rFootmanPurple");
+      } else if (rfootman2look == 6) {
+        rfootman2.setAnimation("rFootmanBlack");
+      } 
+      rfootman2.scale = 0.45;
+    }
+    if (rfootman2attack > 70) {
+      rfootman2attack = 1;
+      if (rfootman2.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 2;
+      } else if (rfootman2.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 2;
+      } else if (rfootman2.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 2;
+      } else if (rfootman2.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 2;
+      } else if (rfootman2.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 2;
+      } else if (rfootman2.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 2;
+      } else if (rfootman2.isTouching(footman)) {
+        footmanhealth = footmanhealth - 2;
+      } else if (rfootman2.isTouching(footman2)) {
+        footman2health = footman2health - 2;
+      } else if (rfootman2.isTouching(footman3)) {
+        footman3health = footman3health - 2;
+      } else if (rfootman2.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 2;
+      } else if (rfootman2.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 2;
+      } else if (rfootman2.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 2;
+      } else if (rfootman2.isTouching(ram)) {
+        ramhealth = ramhealth - 2;
+      } else if (rfootman2.isTouching(archer)) {
+        archerhealth = archerhealth - 2;
+      } else if (rfootman2.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 2;
+      } else if (rfootman2.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 2;
+      } else if (rfootman2.isTouching(tower_blue)) {
+        towerbluehealth =  towerbluehealth - 2;
+      }
+    }
+  } else {
+    rfootman2.velocityX = -0.5;
+    rfootman2.scale = 0.45;
+    if (rfootman2look == 1){
+      rfootman2.setAnimation("rFootmanRedWalk");
+    } else if (rfootman2look == 2) {
+      rfootman2.setAnimation("rFootmanGreenWalk");
+    } else if (rfootman2look == 3) {
+      rfootman2.setAnimation("rFootmanBlueWalk");
+    } else if (rfootman2look == 4) {
+      rfootman2.setAnimation("rFootmanOrangeWalk");
+    } else if (rfootman2look == 5) {
+      rfootman2.setAnimation("rFootmanPurpleWalk");
+    } else if (rfootman2look == 6) {
+      rfootman2.setAnimation("rFootmanBlackWalk");
+    } 
+  }
+  if (rfootman2health < 1) {
+    rfootman2.x = 368;
+    rfootman2.y = 324;
+    rfootman2.visible = true;
+    rfootman2.scale = 0.25;
+    rfootman2health = 0;
+  }
+}
+
+function rfootman3attacks() {
+  if (rfootman3.isTouching(blue)) {
+    rfootman3attack ++;
+    rfootman3.velocityX = 0;
+    if (rfootman3attack < 50) {
+      rfootman3.scale = 0.45;
+      if (rfootman3look == 1){
+        rfootman3.setAnimation("rFootmanRedIdle");
+      } else if (rfootman3look == 2) {
+        rfootman3.setAnimation("rFootmanGreenIdle");
+      } else if (rfootman3look == 3) {
+        rfootman3.setAnimation("rFootmanBlueIdle");
+      } else if (rfootman3look == 4) {
+        rfootman3.setAnimation("rFootmanOrangeIdle");
+      } else if (rfootman3look == 5) {
+        rfootman3.setAnimation("rFootmanPurpleIdle");
+      } else if (rfootman3look == 6) {
+        rfootman3.setAnimation("rFootmanBlackIdle");
+      }
+    } else if ((rfootman3attack > 50) && (rfootman3attack < 70)) {
+      if (rfootman3look == 1){
+        rfootman3.setAnimation("rFootmanRed");
+      } else if (rfootman3look == 2) {
+        rfootman3.setAnimation("rFootmanGreen");
+      } else if (rfootman3look == 3) {
+        rfootman3.setAnimation("rFootmanBlue");
+      } else if (rfootman3look == 4) {
+        rfootman3.setAnimation("rFootmanOrange");
+      } else if (rfootman3look == 5) {
+        rfootman3.setAnimation("rFootmanPurple");
+      } else if (rfootman3look == 6) {
+        rfootman3.setAnimation("rFootmanBlack");
+      } 
+      rfootman3.scale = 0.45;
+    }
+    if (rfootman3attack > 70) {
+      rfootman3attack = 1;
+      if (rfootman3.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 2;
+      } else if (rfootman3.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 2;
+      } else if (rfootman3.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 2;
+      } else if (rfootman3.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 2;
+      } else if (rfootman3.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 2;
+      } else if (rfootman3.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 2;
+      } else if (rfootman3.isTouching(footman)) {
+        footmanhealth = footmanhealth - 2;
+      } else if (rfootman3.isTouching(footman2)) {
+        footman2health = footman2health - 2;
+      } else if (rfootman3.isTouching(footman3)) {
+        footman3health = footman3health - 2;
+      } else if (rfootman3.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 2;
+      } else if (rfootman3.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 2;
+      } else if (rfootman3.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 2;
+      } else if (rfootman3.isTouching(ram)) {
+        ramhealth = ramhealth - 2;
+      } else if (rfootman3.isTouching(archer)) {
+        archerhealth = archerhealth - 2;
+      } else if (rfootman3.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 2;
+      } else if (rfootman3.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 2;
+      } else if (rfootman3.isTouching(tower_blue)) {
+        towerbluehealth =  towerbluehealth - 2;
+      }
+    }
+  } else {
+    rfootman3.velocityX = -0.5;
+    rfootman3.scale = 0.45;
+    if (rfootman3look == 1){
+      rfootman3.setAnimation("rFootmanRedWalk");
+    } else if (rfootman3look == 2) {
+      rfootman3.setAnimation("rFootmanGreenWalk");
+    } else if (rfootman3look == 3) {
+      rfootman3.setAnimation("rFootmanBlueWalk");
+    } else if (rfootman3look == 4) {
+      rfootman3.setAnimation("rFootmanOrangeWalk");
+    } else if (rfootman3look == 5) {
+      rfootman3.setAnimation("rFootmanPurpleWalk");
+    } else if (rfootman3look == 6) {
+      rfootman3.setAnimation("rFootmanBlackWalk");
+    } 
+  }
+  if (rfootman3health < 1) {
+    rfootman3.x = 368;
+    rfootman3.y = 330;
+    rfootman3.visible = true;
+    rfootman3.scale = 0.25;
+    rfootman3health = 0;
+  }
+}
+
+function rfootmanspawn() {
+    if ((rfootmanhealth < 1) && (rfootman2health < 1) && (rfootman3health < 1))
+      if (keyDown("l") && (coinsred > 70)){
+        rfootmanhealth = 5;
+        rfootmanlook = randomNumber(1,6);
+        rfootman2health = 5;
+        rfootman2look = randomNumber(1,6);
+        rfootman3health = 5;
+        rfootman3look = randomNumber(1,6);
+        coinsred = coinsred - 70;
+        rfootman.visible = true;
+        rfootman2.visible = true;
+        rfootman3.visible = true;
+        if (redlane == 1) {
+          rfootman.y = 125;
+          rfootman.x = randomNumber(355,365);
+          rfootman2.y = 135;
+          rfootman2.x = randomNumber(355,365);
+          rfootman3.y = 145;
+          rfootman3.x = randomNumber(355,365);
+        }
+        if (redlane == 2) {
+          rfootman.y = 185;
+          rfootman.x = randomNumber(365,385);
+          rfootman2.y = 195;
+          rfootman2.x = randomNumber(365,385);
+          rfootman3.y = 205;  
+          rfootman3.x = randomNumber(365,385);
+        }
+        if (redlane == 3) {
+          rfootman.y = 235;
+          rfootman.x = randomNumber(380,400);
+          rfootman2.y = 245;
+          rfootman2.x = randomNumber(380,400);
+          rfootman3.y = 255; 
+          rfootman3.x = randomNumber(380,400);
+        }
+     }
+ }
+
+function rphalanges() {
+  if (rphalanx.isTouching(blue)) {
+    rphalanxattack ++;
+    rphalanx.velocityX = 0;
+    if (rphalanxattack < 100) {
+      rphalanx.setAnimation("rPhalanx");
+      rphalanx.scale = 0.175;
+      rphalanxdefense = 1;
+    }
+    if ((rphalanxattack > 100) && (rphalanxattack < 120)) {
+      rphalanx.setAnimation("rPhalanxAttack");
+      rphalanx.scale = 0.35;
+      rphalanxdefense= 0;
+    }
+    if (rphalanxattack > 120) {
+      rphalanxattack = 1;
+      if (rphalanx.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 1;
+      } else if (rphalanx.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 1;
+      } else if (rphalanx.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 1;
+      } else if (rphalanx.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 1;
+      } else if (rphalanx.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 1;
+      } else if (rphalanx.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 1;
+      } else if (rphalanx.isTouching(footman)) {
+        footmanhealth = footmanhealth - 1;
+      } else if (rphalanx.isTouching(footman2)) {
+        footman2health = footman2health - 1;
+      } else if (rphalanx.isTouching(footman3)) {
+        footman3health = footman3health - 1;
+      } else if (rphalanx.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 1;
+      } else if (rphalanx.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 1;
+      } else if (rphalanx.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 1;
+      } else if (rphalanx.isTouching(ram)) {
+        ramhealth = ramhealth - 1;
+      } else if (rphalanx.isTouching(archer)) {
+        archerhealth = archerhealth - 1;
+      } else if (rphalanx.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 1;
+      } else if (rphalanx.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 1;
+      } else if (rphalanx.isTouching(tower_blue)) {
+        towerbluehealth = towerbluehealth - 1;
+      }
+    }
+  } else {
+    rphalanx.velocityX = -0.25;
+    rphalanx.setAnimation("rPhalanxWalk");
+    rphalanx.scale = 0.175;
+  }
+  if (rphalanxhealth < 1) {
+    rphalanx.x = 271;
+    rphalanx.y = 318;
+    rphalanx.scale = 0.1;
+    rphalanx.visible = true;
+    rphalanxhealth = 0;
+  }
+}
+
+function rphalanges2() {
+  if (rphalanx2.isTouching(blue)) {
+    rphalanx2attack ++;
+    rphalanx2.velocityX = 0;
+    if (rphalanx2attack < 100) {
+      rphalanx2.setAnimation("rPhalanx");
+      rphalanx2.scale = 0.175;
+      rphalanx2defense = 1;
+    }
+    if ((rphalanx2attack > 100) && (rphalanx2attack < 120)) {
+      rphalanx2.setAnimation("rPhalanxAttack");
+      rphalanx2.scale = 0.35;
+      rphalanx2defense= 0;
+    }
+    if (rphalanx2attack > 120) {
+      rphalanx2attack = 1;
+      if (rphalanx2.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 1;
+      } else if (rphalanx2.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 1;
+      } else if (rphalanx2.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 1;
+      } else if (rphalanx2.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 1;
+      } else if (rphalanx2.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 1;
+      } else if (rphalanx2.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 1;
+      } else if (rphalanx2.isTouching(footman)) {
+        footmanhealth = footmanhealth - 1;
+      } else if (rphalanx2.isTouching(footman2)) {
+        footman2health = footman2health - 1;
+      } else if (rphalanx2.isTouching(footman3)) {
+        footman3health = footman3health - 1;
+      } else if (rphalanx2.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 1;
+      } else if (rphalanx2.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 1;
+      } else if (rphalanx2.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 1;
+      } else if (rphalanx2.isTouching(ram)) {
+        ramhealth = ramhealth - 1;
+      } else if (rphalanx2.isTouching(rarcher)) {
+        archerhealth = archerhealth - 1;
+      } else if (rphalanx2.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 1;
+      } else if (rphalanx2.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 1;
+      } else if (rphalanx2.isTouching(tower_blue)) {
+        towerbluehealth = towerbluehealth - 1;
+      }
+    }
+  } else {
+    rphalanx2.velocityX = -0.25;
+    rphalanx2.setAnimation("rPhalanxWalk");
+    rphalanx2.scale = 0.175;
+  }
+  if (rphalanx2health < 1) {
+    rphalanx2.x = 271;
+    rphalanx2.y = 324;
+    rphalanx2.scale = 0.1;
+    rphalanx2.visible = true;
+    rphalanx2health = 0;
+  }
+}
+
+function rphalanges3() {
+  if (rphalanx3.isTouching(blue)) {
+    rphalanx3attack ++;
+    rphalanx3.velocityX = 0;
+    if (rphalanx3attack < 100) {
+      rphalanx3.setAnimation("rPhalanx");
+      rphalanx3.scale = 0.175;
+      rphalanx3defense = 1;
+    }
+    if ((rphalanx3attack > 100) && (rphalanx3attack < 120)) {
+      rphalanx3.setAnimation("rPhalanxAttack");
+      rphalanx3.scale = 0.35;
+      rphalanx3defense= 0;
+    }
+    if (rphalanx3attack > 120) {
+      rphalanx3attack = 1;
+      if (rphalanx3.isTouching(phalanx)) {
+        phalanxhealth = phalanxhealth - 1;
+      } else if (rphalanx3.isTouching(phalanx2)) {
+        phalanx2health = phalanx2health - 1;
+      } else if (rphalanx3.isTouching(phalanx3)) {
+        phalanx3health = phalanx3health - 1;
+      } else if (rphalanx3.isTouching(pavise)) {
+        pavisehealth = pavisehealth - 1;
+      } else if (rphalanx3.isTouching(slasher)) {
+        slasherhealth = slasherhealth - 1;
+      } else if (rphalanx3.isTouching(bknight)) {
+        bknighthealth = bknighthealth - 1;
+      } else if (rphalanx3.isTouching(footman)) {
+        footmanhealth = footmanhealth - 1;
+      } else if (rphalanx3.isTouching(footman2)) {
+        footman2health = footman2health - 1;
+      } else if (rphalanx3.isTouching(footman3)) {
+        footman3health = footman3health - 1;
+      } else if (rphalanx3.isTouching(bcavalry)) {
+        bcavalryhealth = bcavalryhealth - 1;
+      } else if (rphalanx3.isTouching(berserker)) {
+        berserkerhealth = berserkerhealth - 1;
+      } else if (rphalanx3.isTouching(pikeman)) {
+        pikemanhealth = pikemanhealth - 1;
+      } else if (rphalanx3.isTouching(ram)) {
+        ramhealth = ramhealth - 1;
+      } else if (rphalanx3.isTouching(archer)) {
+        archerhealth = archerhealth - 1;
+      } else if (rphalanx3.isTouching(pavisier)) {
+        pavisierhealth = pavisierhealth - 1;
+      } else if (rphalanx3.isTouching(cannon)) {
+        cannonhealth = cannonhealth - 1;
+      } else if (rphalanx3.isTouching(tower_blue)) {
+        towerbluehealth = towerbluehealth - 1;
+      }
+    }
+  } else {
+    rphalanx3.velocityX = -0.25;
+    rphalanx3.setAnimation("rPhalanxWalk");
+    rphalanx3.scale = 0.175;
+  }
+  if (rphalanx3health < 1) {
+    rphalanx3.x = 271;
+    rphalanx3.y = 330;
+    rphalanx3.scale = 0.1;
+    rphalanx3.visible = true;
+    rphalanx3health = 0;
+  }
+}
+
+function rphalangesspawn() {
+    if ((rphalanxhealth < 1) && (rphalanx2health < 1) && (rphalanx3health < 1))
+      if (keyDown("i") && (coinsred > 40)){
+        rphalanxhealth = 13;
+        rphalanx2health = 13;
+        rphalanx3health = 13;
+        coinsred = coinsred - 40;
+        rphalanx.visible = true;
+        rphalanx2.visible = true;
+        rphalanx3.visible = true;
+        if (redlane == 1) {
+          rphalanx.y = 125;
+          rphalanx.x = 360;
+          rphalanx2.y = 135;
+          rphalanx2.x = 360;
+          rphalanx3.y = 145;
+          rphalanx3.x = 360;
+        }
+        if (redlane == 2) {
+          rphalanx.y = 185;
+          rphalanx.x = 375;
+          rphalanx2.y = 195;
+          rphalanx2.x = 375;
+          rphalanx3.y = 205;  
+          rphalanx3.x = 375;
+        }
+        if (redlane == 3) {
+          rphalanx.y = 235;
+          rphalanx.x = 390;
+          rphalanx2.y = 245;
+          rphalanx2.x = 390;
+          rphalanx3.y = 255; 
+          rphalanx3.x = 390;
+        }
+     }
+ }
+
+function end() {
+  if (towerbluehealth < 1) {
+    win.visible = true;
+    win.setAnimation("redwin");
+    backdrop.setAnimation("🅱️ackdrop_redwin");
+    towerredhealth = 50;
+  }
+  if (towerredhealth < 1) {
+    win.visible = true;
+    win.setAnimation("bluewin");
+    backdrop.setAnimation("🅱️ackdrop_bluewin");
+    towerbluehealth = 50;
+  }
+}
+
+//      00 
+//     (--)  - (Woof!)
+//    ( || )
+//    ^^~~^^
+//Look for the tiny beetle in the game! its pretty hard to see
